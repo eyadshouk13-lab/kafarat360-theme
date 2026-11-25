@@ -769,7 +769,8 @@
     if (name === "cats") renderCatsPage(body);
     if (name === "brands") body.innerHTML = '<div class="brands" data-k360="brands"></div>';
     if (name === "areas") body.innerHTML = '<div class="k360-about"><section><p>نوصّل ونركّب إطارات كفرات 360 عند باب بيتك في مدن المملكة. اختر مدينتك لتعرف تفاصيل الخدمة فيها، وإذا مدينتك غير مذكورة تواصل معنا ونرتّب لك.</p></section>' +
-      '<div class="ar-grid">' + CITIES.map(function (c) { return '<a class="ar-card" href="' + cityUrl(c) + '"><b>الإطارات في ' + c[1] + "</b><span>توصيل وتركيب عند بابك &larr;</span></a>"; }).join("") + "</div></div>";
+      '<div class="ar-grid">' + CITIES.map(function (c) { return '<a class="ar-card" href="' + cityUrl(c) + '"><b>الإطارات في ' + c[1] + "</b><span>توصيل وتركيب عند بابك &larr;</span></a>"; }).join("") + "</div>" +
+      CITIES.map(function (c) { return BR[c[0]] ? "<section><h3>فروعنا في " + c[1] + "</h3>" + brCards(BR[c[0]]) + "</section>" : ""; }).join("") + "</div>";
     if (name === "city") renderCityPage(body, q.get("c"));
     if (name === "best") body.innerHTML = '<salla-products-list source="sales" source-value="[]"></salla-products-list>';
     if (INFO[name]) body.innerHTML = '<article class="k360-doc">' + INFO[name].replace(/href="@(\w+)"/g, function (m, n) { return 'href="' + (n === "finder" ? base().replace(/\/?$/, "/") + "#k360-finder" : pageUrl(n)) + '"'; }) + "</article>";
@@ -782,6 +783,23 @@
   }
 
   /* ---------- service areas: one page per city ---------- */
+  var GM = "https://www.google.com/maps?q=";
+  var BR = {
+    riyadh: [["ميشلان", "الرياض – العليا", GM + "24.6881519,46.6872255"], ["بريجستون", "الرياض – الملز", GM + "24.6940456,46.7286636"], ["بريجستون", "الرياض – الربيع", GM + "24.8062754,46.6713686"]],
+    jeddah: [["ميشلان", "جدة – فرع 01", GM + encodeURIComponent("مركز الثريا العالمية التجاريه للإطارات، طريق مكة القديم، جدة 22335")], ["بريجستون", "جدة – فرع 02", GM + "21.5301408,39.1843234"]],
+    makkah: [["بريجستون", "مكة المكرمة – فرع 01", GM + "21.3916258,39.8126863"]],
+    dammam: [["ميشلان", "الدمام – فرع 01", GM + "26.421924591064453,50.08843231201172"], ["بريجستون", "الدمام – فرع 02", GM + encodeURIComponent("6501 طريق عثمان بن عفان، حي البادية، الدمام 32243")]],
+    khobar: [["ميشلان", "الخبر – فرع 01", GM + "26.34339,50.19569"], ["ميشلان", "الخبر – فرع 02", GM + "26.34327,50.19661"], ["فايرستون", "الخبر – فرع 03", GM + "26.3500383,50.1933356"]],
+    ahsa: [["فرع الأحساء", "الأحساء – فرع 01", "https://www.google.com/maps?cid=15094289712075048423"]],
+    yanbu: [["بريجستون", "ينبع – فرع 01", GM + "24.0727628,38.1070446"]],
+    abha: [["بريجستون", "أبها – فرع 01", GM + "18.2564326,42.6329635"]],
+    hail: [["بريجستون", "حائل – فرع 01", GM + "27.4900556,41.7079103"]]
+  };
+  function brCards(list) {
+    return '<div class="br-grid">' + list.map(function (b) {
+      return '<div class="br-card"><span class="br-tag">' + esc(b[0]) + "</span><b>" + esc(b[1]) + '</b><a class="k360-btn k360-btn--ghost" href="' + b[2] + '" target="_blank" rel="noopener">&#128205; الاتجاهات</a></div>';
+    }).join("") + "</div>";
+  }
   var CITY_SIZES = ["265/70 R17", "215/55 R17", "235/45 R18", "285/50 R20", "245/45 R20", "255/50 R20", "275/60 R20", "235/55 R18", "215/60 R16", "195/65 R15", "265/65 R18", "265/65 R17"];
   function renderCityPage(body, slug) {
     var c = null; CITIES.forEach(function (x) { if (x[0] === slug) c = x; });
@@ -799,6 +817,7 @@
       '<section class="ab-hero"><span class="ab-tag">' + n + '</span><h2>اشترِ إطارات في ' + n + '… ونركّبها عند بابك</h2><p>إطارات أصلية من أشهر الماركات العالمية، توصيل سريع وتركيب احترافي في ' + n + '.</p>' +
       '<div class="ab-btns"><a class="k360-btn k360-btn--primary" href="' + home + '#k360-finder">ابحث بمقاس سيارتك</a><a class="k360-btn k360-btn--ghost" href="' + pageUrl("shop") + '">تسوّق الإطارات</a></div></section>' +
       '<section><div class="ab-grid"><div class="ab-card"><i>&#128666;</i><b>توصيل في ' + n + '</b><p>نوصّل طلبك إلى موقعك في ' + n + '.</p></div><div class="ab-card"><i>&#9881;</i><b>تركيب احترافي</b><p>تركيب عند بابك أو في مقر عملك.</p></div><div class="ab-card"><i>&#128737;</i><b>إطارات أصلية</b><p>ضمان الوكيل وتواريخ إنتاج حديثة.</p></div><div class="ab-card"><i>&#128172;</i><b>دعم في اختيار المقاس</b><p>فريقنا يساعدك تختار المناسب لسيارتك.</p></div></div></section>' +
+      (BR[slug] ? '<section><h3>فروعنا في ' + n + "</h3>" + brCards(BR[slug]) + "</section>" : "") +
       '<section><h3>ماركات الإطارات المتوفرة في ' + n + '</h3><div class="brands" data-k360="brands"></div></section>' +
       '<section><h3>مقاسات شائعة في ' + n + '</h3><p>تبحث عن مقاس معيّن؟ هذه أكثر المقاسات طلباً، سواء لسيارة سيدان أو SUV أو بيك آب.</p><div class="ar-sizes">' +
       CITY_SIZES.map(function (s) { return '<a href="' + home + "search?q=" + encodeURIComponent(s) + '">' + s + "</a>"; }).join("") + "</div></section>" +

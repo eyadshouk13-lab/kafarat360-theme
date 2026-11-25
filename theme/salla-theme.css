@@ -904,3 +904,11 @@ body.brands-single:has(.k360-bhead) main > .container > header{display:none}
 .ar-faq p{padding:0 0 14px}
 .k360-doc:has(.k360-about) .brands{margin-top:12px}
 @media(max-width:700px){.ar-grid{grid-template-columns:1fr 1fr}}
+
+/* ===== Branches ===== */
+.br-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.br-card{background:#fff;border:1px solid var(--k-line);border-radius:16px;padding:18px;box-shadow:var(--k-sh);display:grid;gap:10px;justify-items:start}
+.br-card b{font-size:16px}
+.br-tag{background:var(--k-soft);color:var(--k-brand-d);border-radius:999px;padding:3px 12px;font-size:12px;font-weight:800}
+.br-card .k360-btn{padding:8px 16px;font-size:14px}
+@media(max-width:700px){.br-grid{grid-template-columns:1fr}}
