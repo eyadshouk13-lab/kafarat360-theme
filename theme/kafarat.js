@@ -287,12 +287,15 @@
   }
 
   /* ---------- shared store links: footer + mobile drawer (Salla returns no menus) ---------- */
+  var CITIES = [["riyadh", "الرياض"], ["jeddah", "جدة"], ["makkah", "مكة المكرمة"], ["dammam", "الدمام"], ["khobar", "الخبر"], ["ahsa", "الأحساء"], ["yanbu", "ينبع"], ["abha", "أبها"], ["hail", "حائل"]];
+  function cityUrl(c) { return pageUrl("city", { c: c[0], title: "الإطارات في " + c[1] }); }
   function siteLinks() {
     var home = base().replace(/\/?$/, "/");
     var l = function (n, t) { return [pageUrl(n), t]; };
     return {
       shop: [[home, "الصفحة الرئيسية"], l("offers", "العروض"), l("shop", "جميع المنتجات"), l("best", "الأكثر مبيعاً"), l("cats", "جميع التصنيفات"), l("brands", "العلامات التجارية"), [home + "#k360-finder", "ابحث بالمقاس"], [home + "#k360-garage", "ماي جراش"]],
       about: [l("why", "من نحن")],
+      areas: CITIES.map(function (c) { return [cityUrl(c), "الإطارات في " + c[1]]; }),
       cats: [[pageUrl("shop", { t: "car", title: TYPES.car }), "إطارات " + TYPES.car], [pageUrl("shop", { t: "suv", title: TYPES.suv }), "إطارات " + TYPES.suv], [pageUrl("shop", { t: "truck", title: TYPES.truck }), "إطارات " + TYPES.truck], [pageUrl("offers"), "عروض الإطارات"]],
       help: [l("sizes", "كيف تقرأ مقاس الإطار"), l("delivery", "التسليم والتركيب"), l("warranty", "ضمان الإطارات"), l("returns", "الإرجاع واسترداد المبلغ"), l("privacy", "سياسة الخصوصية"), l("terms", "الشروط والأحكام"), l("support", "خدمة العملاء")]
     };
@@ -313,7 +316,7 @@
       '<div><b>تركيب عند بابك</b><span>توصيل وتركيب في كل مدن المملكة</span></div></div>' +
       '<div class="k360-foot__in">' +
       '<div class="k360-foot__brand"><b>كفرات 360</b><p>إطارات أصلية بتواريخ جديدة من أشهر الماركات العالمية، توصيل وتركيب عند باب بيتك في كل مدن المملكة.</p></div>' +
-      grp("about", "شركتنا", L.about) + grp("cats", "الإطارات", L.cats) +
+      grp("about", "شركتنا", L.about) + grp("cats", "الإطارات", L.cats) + grp("areas", "مجالات الخدمة", L.areas) +
       '<details class="k360-foot__grp" data-g="brands"><summary>الماركات لدينا</summary><ul data-foot-brands><li><a href="' + pageUrl("brands") + '">كل الماركات</a></li></ul></details>' +
       grp("help", "المساعدة والمشورة", L.help) +
       '<details class="k360-foot__grp" data-g="contact"><summary>تواصل معنا</summary><ul><li><a href="tel:' + PHONE + '" dir="ltr">' + PHONE + '</a></li><li><a href="' + pageUrl("support") + '">خدمة العملاء</a></li></ul></details>' +
@@ -535,7 +538,7 @@
   }
 
   var PAGES = { offers: "عروض الجمعة البيضاء", shop: "جميع المنتجات", best: "الأكثر مبيعاً", cats: "جميع التصنيفات", brands: "العلامات التجارية",
-    why: "من نحن", delivery: "التسليم والتركيب", warranty: "ضمان الإطارات", returns: "الإرجاع واسترداد المبلغ",
+    areas: "مجالات الخدمة", city: "الإطارات في مدينتك", why: "من نحن", delivery: "التسليم والتركيب", warranty: "ضمان الإطارات", returns: "الإرجاع واسترداد المبلغ",
     privacy: "سياسة الخصوصية", terms: "الشروط والأحكام", support: "خدمة العملاء", sizes: "كيف تقرأ مقاس الإطار" };
   var PHONE = "+966555023836";
   var INFO = {
@@ -765,6 +768,9 @@
     if (name === "shop") renderShopPage(body, q);
     if (name === "cats") renderCatsPage(body);
     if (name === "brands") body.innerHTML = '<div class="brands" data-k360="brands"></div>';
+    if (name === "areas") body.innerHTML = '<div class="k360-about"><section><p>نوصّل ونركّب إطارات كفرات 360 عند باب بيتك في مدن المملكة. اختر مدينتك لتعرف تفاصيل الخدمة فيها، وإذا مدينتك غير مذكورة تواصل معنا ونرتّب لك.</p></section>' +
+      '<div class="ar-grid">' + CITIES.map(function (c) { return '<a class="ar-card" href="' + cityUrl(c) + '"><b>الإطارات في ' + c[1] + "</b><span>توصيل وتركيب عند بابك &larr;</span></a>"; }).join("") + "</div></div>";
+    if (name === "city") renderCityPage(body, q.get("c"));
     if (name === "best") body.innerHTML = '<salla-products-list source="sales" source-value="[]"></salla-products-list>';
     if (INFO[name]) body.innerHTML = '<article class="k360-doc">' + INFO[name].replace(/href="@(\w+)"/g, function (m, n) { return 'href="' + (n === "finder" ? base().replace(/\/?$/, "/") + "#k360-finder" : pageUrl(n)) + '"'; }) + "</article>";
     if (name === "why") load("brands.json").then(function (bs) {
@@ -773,6 +779,31 @@
       if (t) t.textContent = (Math.floor(sum / 50) * 50).toLocaleString("ar-SA") + "+";
       if (n) n.textContent = live.length.toLocaleString("ar-SA");
     }).catch(function () {});
+  }
+
+  /* ---------- service areas: one page per city ---------- */
+  var CITY_SIZES = ["265/70 R17", "215/55 R17", "235/45 R18", "285/50 R20", "245/45 R20", "255/50 R20", "275/60 R20", "235/55 R18", "215/60 R16", "195/65 R15", "265/65 R18", "265/65 R17"];
+  function renderCityPage(body, slug) {
+    var c = null; CITIES.forEach(function (x) { if (x[0] === slug) c = x; });
+    if (!c) { body.innerHTML = '<p>المدينة غير موجودة. <a href="' + pageUrl("areas") + '">كل مجالات الخدمة</a></p>'; return; }
+    var n = c[1], home = base().replace(/\/?$/, "/");
+    document.title = "شراء إطارات في " + n + " | توصيل وتركيب | كفرات 360";
+    var faq = [
+      ["أين أشتري إطارات أصلية في " + n + "؟", "تقدّم كفرات 360 إطارات أصلية في " + n + " من ماركات موثوقة مثل ميشلان وبريجستون وكونتيننتال وجوديير وبيريللي وكومهو وغيرها. اطلب من المتجر ونوصّل ونركّب عند بابك."],
+      ["هل تقدمون التوصيل في " + n + "؟", "نعم، نوصّل الإطارات إلى " + n + ". يعتمد موعد الوصول على موقعك وتوفر المنتج، ونتواصل معك لتأكيد الموعد."],
+      ["هل التركيب عند بيتي في " + n + "؟", "نعم، خدمة التركيب تصلك عند باب بيتك أو مقر عملك أو أي مكان يناسبك داخل " + n + "."],
+      ["كيف أعرف المقاس المناسب؟", 'مقاس الإطار مكتوب على جدار الإطار الحالي، مثل 265/70 R17. ابحث بالمقاس في المتجر، أو راجع <a href="' + pageUrl("sizes") + '">دليل قراءة المقاس</a>، أو تواصل معنا ونساعدك.'],
+      ["هل الإطارات مضمونة؟", "نعم، تُباع إطاراتنا بضمان الوكيل، وتظهر مدة الضمان في صفحة كل منتج. التفاصيل في صفحة <a href=\"" + pageUrl("warranty") + '">ضمان الإطارات</a>.']
+    ];
+    body.innerHTML = '<div class="k360-about">' +
+      '<section class="ab-hero"><span class="ab-tag">' + n + '</span><h2>اشترِ إطارات في ' + n + '… ونركّبها عند بابك</h2><p>إطارات أصلية من أشهر الماركات العالمية، توصيل سريع وتركيب احترافي في ' + n + '.</p>' +
+      '<div class="ab-btns"><a class="k360-btn k360-btn--primary" href="' + home + '#k360-finder">ابحث بمقاس سيارتك</a><a class="k360-btn k360-btn--ghost" href="' + pageUrl("shop") + '">تسوّق الإطارات</a></div></section>' +
+      '<section><div class="ab-grid"><div class="ab-card"><i>&#128666;</i><b>توصيل في ' + n + '</b><p>نوصّل طلبك إلى موقعك في ' + n + '.</p></div><div class="ab-card"><i>&#9881;</i><b>تركيب احترافي</b><p>تركيب عند بابك أو في مقر عملك.</p></div><div class="ab-card"><i>&#128737;</i><b>إطارات أصلية</b><p>ضمان الوكيل وتواريخ إنتاج حديثة.</p></div><div class="ab-card"><i>&#128172;</i><b>دعم في اختيار المقاس</b><p>فريقنا يساعدك تختار المناسب لسيارتك.</p></div></div></section>' +
+      '<section><h3>ماركات الإطارات المتوفرة في ' + n + '</h3><div class="brands" data-k360="brands"></div></section>' +
+      '<section><h3>مقاسات شائعة في ' + n + '</h3><p>تبحث عن مقاس معيّن؟ هذه أكثر المقاسات طلباً، سواء لسيارة سيدان أو SUV أو بيك آب.</p><div class="ar-sizes">' +
+      CITY_SIZES.map(function (s) { return '<a href="' + home + "search?q=" + encodeURIComponent(s) + '">' + s + "</a>"; }).join("") + "</div></section>" +
+      '<section><h3>أسئلة شائعة عن الإطارات في ' + n + '</h3><div class="ar-faq">' + faq.map(function (f) { return "<details><summary>" + f[0] + "</summary><p>" + f[1] + "</p></details>"; }).join("") + "</div></section>" +
+      '<section class="ab-cta"><b>جاهز تغيّر كفرات سيارتك في ' + n + '؟</b><a class="k360-btn k360-btn--primary" href="' + pageUrl("shop") + '">تصفّح الإطارات</a></section></div>';
   }
 
   /* ---------- brand pages (b/brand-<id>): banner + history of the brand above Salla's product list ---------- */
