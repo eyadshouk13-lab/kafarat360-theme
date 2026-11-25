@@ -664,3 +664,6 @@ body.theme-raed { background-color: var(--k-bg); color: var(--k-ink); }
 .k360-pd .pd-pkg em { white-space: nowrap; text-align: left; }
 .k360-pd .kv { grid-template-columns: repeat(2, 1fr); }
 .k360-pd .pd-pkg.hot { box-shadow: 0 6px 18px rgba(123,63,228,.22); }
+
+/* hidden panes must stay hidden even where a component sets display */
+.k360-site [hidden], .k360-cats[hidden] { display: none !important; }
