@@ -728,7 +728,7 @@ body:has(.k360-hero) .store-header img[src*="221debdd"] { content: url(https://r
 .k360-doc ul, .k360-doc ol { padding-inline-start: 22px; }
 .k360-doc a { color: #7b3fe4; text-decoration: underline; }
 /* Black Friday moving bar */
-.k360-bar { display: block; background: #0b0b0f; color: #fff !important; overflow: hidden; height: 38px; line-height: 38px; position: relative; z-index: 60; text-decoration: none !important; font-size: 13.5px; font-weight: 700; }
+.k360-bar { direction: ltr; display: block; background: #0b0b0f; color: #fff !important; overflow: hidden; height: 38px; line-height: 38px; position: relative; z-index: 60; text-decoration: none !important; font-size: 13.5px; font-weight: 700; }
 .k360-bar__track { display: flex; width: max-content; direction: ltr; animation: k360-bar 34s linear infinite; }
 .k360-bar:hover .k360-bar__track { animation-play-state: paused; }
 .k360-bar__track > div { display: flex; flex: none; white-space: nowrap; }
@@ -745,3 +745,4 @@ body:has(.k360-hero) .store-header img[src*="221debdd"] { content: url(https://r
 .k360-offer > b { flex: none; min-width: 84px; text-align: center; padding: 12px 10px; border-radius: 12px; background: #0b0b0f; color: #f5c542; font-size: 22px; font-weight: 800; }
 .k360-offer strong { display: block; font-size: 16px; color: #1b1530; margin-bottom: 4px; }
 .k360-offer small { color: #6b6585; font-size: 13px; line-height: 1.7; }
+body.k360-has-bar:has(.k360-hero) .store-header { top: 38px !important; }
