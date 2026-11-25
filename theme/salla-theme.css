@@ -763,3 +763,5 @@ body.k360-has-bar:has(.k360-hero) .store-header { top: 38px !important; }
 .k360-bnpl .k360-bn.mispay { height: 22px; }
 .k360-foot__pay .k360-bn { height: 28px; }
 .k360-foot__pay .k360-bn.mispay { height: 30px; }
+/* Header logo on inner pages: full logo on a black rounded plate */
+.store-header img[src*="221debdd"] { content: url(https://raw.githubusercontent.com/eyadshouk13-lab/kafarat360-images/267998d15e2719cea4b5c6c78a75a2b5f9df1792/brand/logo-wide-transparent.png) !important; width: auto !important; height: 46px !important; max-width: 150px; object-fit: contain; background: #0b0b0f; border-radius: 10px; padding: 2px 8px; box-sizing: content-box; }
