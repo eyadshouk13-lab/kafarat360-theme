@@ -814,3 +814,8 @@ body.k360-has-bar:has(.k360-hero) .store-header { top: 38px !important; }
 .ofr--img { padding: 0 !important; min-height: 0 !important; background: #0b0b0f; display: block; line-height: 0; }
 .ofr--img img { width: 100%; height: auto; display: block; aspect-ratio: 16 / 9; object-fit: cover; }
 @media (min-width: 768px) { .ofr--img { border-radius: 18px; overflow: hidden; } }
+/* Hero video: invisible until it is really playing, taps never reach YouTube's player UI */
+.k360-hero__over { transition: opacity .7s ease; }
+.k360-hero__over.is-wait { opacity: 0; }
+.k360-hero__over, .k360-hero__over iframe { pointer-events: none !important; }
+.k360-hero__shade { pointer-events: auto; }

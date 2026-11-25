@@ -334,6 +334,33 @@
     ul.innerHTML = siteLinks().shop.map(function (l) { return '<li><a href="' + l[0] + '">' + l[1] + "</a></li>"; }).join("");
   }
 
+  /* ---------- hero video: hide YouTube's own pause mark, never stay paused ---------- */
+  function initHeroVideo() {
+    var f = document.querySelector(".k360-hero__over iframe");
+    if (!f || f.getAttribute("data-k360-yt")) return;
+    f.setAttribute("data-k360-yt", "1");
+    var box = f.parentElement; box.classList.add("is-wait");
+    if (!/enablejsapi=1/.test(f.src)) f.src = f.src + "&enablejsapi=1&origin=" + encodeURIComponent(location.origin);
+    function boot() {
+      try {
+        new YT.Player(f, { events: {
+          onReady: function (e) { try { e.target.mute(); e.target.playVideo(); } catch (_) {} },
+          onStateChange: function (e) {
+            if (e.data === 1) box.classList.remove("is-wait");
+            if (e.data === 2 || e.data === 0 || e.data === 5) { try { e.target.playVideo(); } catch (_) {} }
+          }
+        } });
+      } catch (_) { box.classList.remove("is-wait"); }
+    }
+    if (window.YT && YT.Player) boot();
+    else {
+      var prev = window.onYouTubeIframeAPIReady;
+      window.onYouTubeIframeAPIReady = function () { if (prev) prev(); boot(); };
+      var s = document.createElement("script"); s.src = "https://www.youtube.com/iframe_api"; document.head.appendChild(s);
+    }
+    setTimeout(function () { box.classList.remove("is-wait"); }, 9000);
+  }
+
   /* ---------- offer slider under the hero: autoplay, dots, swipe ---------- */
   function initSlider(el) {
     var rail = el.querySelector(".k360-ofr__rail"), dots = el.querySelector("[data-dots]"); if (!rail || !dots) return;
@@ -770,6 +797,7 @@
     initFooter();
     initDrawer();
     initOfferBar();
+    initHeroVideo();
   }
   var queued = false;
   function queue() { if (queued) return; queued = true; setTimeout(function () { queued = false; scan(); }, 150); }
