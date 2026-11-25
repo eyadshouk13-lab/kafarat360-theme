@@ -1017,6 +1017,9 @@
       e.preventDefault(); e.stopPropagation();
       addToCart(+b.getAttribute("data-add"), +b.getAttribute("data-q"), b);
     }, true);
+    /* header turns solid dark once the page is scrolled, so the menu stays readable */
+    var onScroll = function () { document.body.classList.toggle("k360-scrolled", (window.pageYOffset || document.documentElement.scrollTop) > 40); };
+    window.addEventListener("scroll", onScroll, { passive: true }); onScroll();
     var selPkg = function (e) {
       var b = e.target.closest && e.target.closest(".pkgs .pkg"); if (!b) return;
       [].forEach.call(b.parentNode.children, function (x) { x.classList.toggle("sel", x === b); });

@@ -996,3 +996,8 @@ body.brands-single:has(.k360-bhead) main > .container > header{display:none}
 .k360-shop__top .top-grid{grid-template-columns:repeat(3,1fr)!important}
 @media(max-width:1180px){.k360-shop__top .top-grid{grid-template-columns:repeat(3,1fr)!important}}
 @media(max-width:700px){.k360-shop__top .top-grid{grid-template-columns:repeat(2,1fr)!important}}
+
+/* Home header: transparent on top, solid dark and fixed after scrolling */
+body.k360-scrolled:has(.k360-hero) .store-header,
+body.k360-scrolled.k360-has-bar:has(.k360-hero) .store-header{position:fixed!important;top:0!important;background:#0b0b0f!important;box-shadow:0 6px 20px rgba(0,0,0,.35)!important;border-bottom:2px solid #7B3FE4!important;transition:background .2s}
+body.k360-scrolled:has(.k360-hero) .store-header *{text-shadow:none}
