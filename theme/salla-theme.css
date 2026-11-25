@@ -991,3 +991,8 @@ body.brands-single:has(.k360-bhead) main > .container > header{display:none}
 .mp-border{fill:none;stroke:var(--k-brand);stroke-width:2.5;stroke-linejoin:round;pointer-events:none}
 .mp-rname{font-size:10.5px;fill:#7a6aa0;font-weight:700;pointer-events:none;font-family:inherit}
 .mp-note{font-size:12px;color:var(--k-muted);margin:8px 4px 0}
+
+/* Home shop: filters on the side (PC) / on top (phone), "most used" below until a filter is used */
+.k360-shop__top .top-grid{grid-template-columns:repeat(3,1fr)!important}
+@media(max-width:1180px){.k360-shop__top .top-grid{grid-template-columns:repeat(3,1fr)!important}}
+@media(max-width:700px){.k360-shop__top .top-grid{grid-template-columns:repeat(2,1fr)!important}}

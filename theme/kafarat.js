@@ -102,10 +102,12 @@
       '<label>ترتيب</label><select data-f="sort"><option value="">الافتراضي</option><option value="asc"' + (f.sort === "asc" ? " selected" : "") + '>السعر: من الأقل</option><option value="desc"' + (f.sort === "desc" ? " selected" : "") + '>السعر: من الأعلى</option><option value="off"' + (f.sort === "off" ? " selected" : "") + ">أعلى خصم</option></select>" +
       '<button type="button" class="k360-btn k360-btn--line" data-reset>مسح الفلاتر</button>' +
       "</details>" +
-      '<div class="k360-shop__main"><p class="k360-shop__count">' + list.length.toLocaleString("ar-SA") + " إطار" + (f.q ? " · بحث: " + esc(f.q) : "") + "</p>" +
-      grid(list, shop.shown) +
-      (list.length > shop.shown ? '<button type="button" class="k360-btn k360-btn--primary k360-more" data-more>عرض المزيد</button>' : "") +
-      "</div></div>";
+      (shop.el.getAttribute("data-home") === "top" && !Object.keys(f).some(function (k) { return f[k]; })
+        ? '<div class="k360-shop__main k360-shop__top"><div data-k360="top"></div></div></div>'
+        : '<div class="k360-shop__main"><p class="k360-shop__count">' + list.length.toLocaleString("ar-SA") + " إطار" + (f.q ? " · بحث: " + esc(f.q) : "") + "</p>" +
+          grid(list, shop.shown) +
+          (list.length > shop.shown ? '<button type="button" class="k360-btn k360-btn--primary k360-more" data-more>عرض المزيد</button>' : "") +
+          "</div></div>");
     if (window.innerWidth < 768) { var det = shop.el.querySelector("details"); if (det && !shop.keepOpen) det.open = false; }
   }
 
