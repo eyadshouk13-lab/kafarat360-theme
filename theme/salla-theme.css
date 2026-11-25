@@ -950,3 +950,16 @@ body.brands-single:has(.k360-bhead) main > .container > header{display:none}
 
 /* ===== BNPL logos in the home payments row ===== */
 .k360-pay-row .k360-bn{height:28px;width:auto;max-width:90px;object-fit:contain}
+
+/* ===== Account menu: clear black / white contrast (phone + desktop) ===== */
+.s-user-menu-dropdown{background:#0f0f14!important;color:#fff!important;border:1px solid rgba(255,255,255,.12);border-radius:16px;box-shadow:0 12px 34px rgba(0,0,0,.45)}
+.s-user-menu-dropdown-header{border-bottom:1px solid rgba(255,255,255,.12)}
+.s-user-menu-dropdown-header-content span{color:#b9b9c6!important}
+.s-user-menu-dropdown-header-content p{color:#fff!important;font-weight:800}
+.s-user-menu-dropdown-header-close svg{color:#fff!important}
+.s-user-menu-dropdown-item a{color:#fff!important;font-weight:700}
+.s-user-menu-dropdown-item a:hover{background:rgba(255,255,255,.08)!important}
+.s-user-menu-dropdown-item svg,.s-user-menu-dropdown-item-prefix svg,.s-user-menu-dropdown-item-suffix svg{color:#fff!important}
+.s-user-menu-dropdown-item-logout a,.s-user-menu-dropdown-item-logout a svg{color:#ff6b60!important}
+.s-user-menu-dropdown-item-balance,.s-user-menu-dropdown-item-suffix-link{color:#fff!important}
+.s-user-menu-dropdown-list>:not([hidden])~:not([hidden]){border-color:rgba(255,255,255,.1)!important}
