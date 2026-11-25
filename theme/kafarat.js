@@ -800,12 +800,24 @@
       return '<div class="br-card"><span class="br-tag">' + esc(b[0]) + "</span><b>" + esc(b[1]) + '</b><a class="k360-btn k360-btn--ghost" href="' + b[2] + '" target="_blank" rel="noopener">&#128205; الاتجاهات</a></div>';
     }).join("") + "</div>";
   }
+  var CITYIMG = "https://cdn.jsdelivr.net/gh/eyadshouk13-lab/kafarat360-theme@ffa568665dfe712671551af83632e935f6a32ede/city/";
+  var CITYCR = {
+    riyadh: ["B.alotaby", "CC BY-SA 4.0", "https://commons.wikimedia.org/wiki/File:Riyadh_Skyline.jpg"],
+    jeddah: ["Joseph Azrak", "CC BY-SA 4.0", "https://commons.wikimedia.org/wiki/File:Jeddah_Corniche_at_night.jpg"],
+    makkah: ["King Eliot", "CC BY-SA 4.0", "https://commons.wikimedia.org/wiki/File:Clock_Tower_Makkah_2.jpg"],
+    dammam: ["King Eliot", "CC BY-SA 4.0", "https://commons.wikimedia.org/wiki/File:Dammam_Corniche.jpg"],
+    khobar: ["Francisco Anzola", "CC BY 2.0", "https://commons.wikimedia.org/wiki/File:Al_Khobar_Corniche_(12482233074).jpg"],
+    ahsa: ["Ondřej Havelka", "CC BY 4.0", "https://commons.wikimedia.org/wiki/File:Al-Qarah_Mountain,_Saudi_Arabia.jpg"],
+    yanbu: ["Richard Mortel", "CC BY 2.0", "https://commons.wikimedia.org/wiki/File:General_view_of_Yanbu_al-Nakhl,_Saudi_Arabia_(1).jpg"],
+    abha: ["Basheer Olakara", "CC BY 2.0", "https://commons.wikimedia.org/wiki/File:Green_Mountain_-_Abha,_Saudi_Arabia_(6702611457).jpg"],
+    hail: ["Pointedstick", "CC0", "https://commons.wikimedia.org/wiki/File:Hail_heritage.jpg"]
+  };
   var CITY_SIZES = ["265/70 R17", "215/55 R17", "235/45 R18", "285/50 R20", "245/45 R20", "255/50 R20", "275/60 R20", "235/55 R18", "215/60 R16", "195/65 R15", "265/65 R18", "265/65 R17"];
   function renderCityPage(body, slug) {
     var c = null; CITIES.forEach(function (x) { if (x[0] === slug) c = x; });
     if (!c) { body.innerHTML = '<p>المدينة غير موجودة. <a href="' + pageUrl("areas") + '">كل مجالات الخدمة</a></p>'; return; }
     var n = c[1], home = base().replace(/\/?$/, "/");
-    document.title = "شراء إطارات في " + n + " | توصيل وتركيب | كفرات 360";
+    document.title = "شراء إطارات في " + n + " | مراكز تركيب معتمدة | كفرات 360";
     var faq = [
       ["أين أشتري إطارات أصلية في " + n + "؟", "تقدّم كفرات 360 إطارات أصلية في " + n + " من ماركات موثوقة مثل ميشلان وبريجستون وكونتيننتال وجوديير وبيريللي وكومهو وغيرها. اطلب من المتجر ونوصّل ونركّب عند بابك."],
       ["كيف يتم الاستلام والتركيب في " + n + "؟", "بعد إتمام طلبك نتواصل معك ونوجّهك إلى مركز الخدمة الأنسب لك في " + n + " لتركيب إطاراتك."],
@@ -814,8 +826,9 @@
       ["هل الإطارات مضمونة؟", "نعم، تُباع إطاراتنا بضمان الوكيل، وتظهر مدة الضمان في صفحة كل منتج. التفاصيل في صفحة <a href=\"" + pageUrl("warranty") + '">ضمان الإطارات</a>.']
     ];
     body.innerHTML = '<div class="k360-about">' +
-      '<section class="ab-hero"><span class="ab-tag">' + n + '</span><h2>اشترِ إطارات في ' + n + '… وركّبها في مركز خدمة قريب</h2><p>إطارات أصلية من أشهر الماركات العالمية، وتركيب احترافي في مراكز الخدمة المعتمدة في ' + n + '.</p>' +
-      '<div class="ab-btns"><a class="k360-btn k360-btn--primary" href="' + home + '#k360-finder">ابحث بمقاس سيارتك</a><a class="k360-btn k360-btn--ghost" href="' + pageUrl("shop") + '">تسوّق الإطارات</a></div></section>' +
+      '<section class="ab-hero ct" style="background-image:url(' + CITYIMG + slug + '.webp)"><span class="ab-tag">' + n + '</span><h2>اشترِ إطارات في ' + n + '… وركّبها في مركز خدمة قريب</h2><p>إطارات أصلية من أشهر الماركات العالمية، وتركيب احترافي في مراكز الخدمة المعتمدة في ' + n + '.</p>' +
+      '<div class="ab-btns"><a class="k360-btn k360-btn--primary" href="' + home + '#k360-finder">ابحث بمقاس سيارتك</a><a class="k360-btn k360-btn--ghost" href="' + pageUrl("shop") + '">تسوّق الإطارات</a></div>' +
+      (CITYCR[slug] && CITYCR[slug][1] !== "CC0" ? '<small class="ab-credit">صورة: <a href="' + CITYCR[slug][2] + '" target="_blank" rel="noopener">' + esc(CITYCR[slug][0]) + "</a> · " + CITYCR[slug][1] + " · Wikimedia Commons</small>" : "") + "</section>" +
       '<section><div class="ab-grid"><div class="ab-card"><i>&#128722;</i><b>اطلب أونلاين</b><p>اختر مقاسك وأتمم الطلب من المتجر بسهولة.</p></div><div class="ab-card"><i>&#9881;</i><b>تركيب في مراكز الخدمة</b><p>نوجّهك إلى مركز خدمة معتمد قريب منك في ' + n + '.</p></div><div class="ab-card"><i>&#128737;</i><b>إطارات أصلية</b><p>ضمان الوكيل وتواريخ إنتاج حديثة.</p></div><div class="ab-card"><i>&#128172;</i><b>دعم في اختيار المقاس</b><p>فريقنا يساعدك تختار المناسب لسيارتك.</p></div></div></section>' +
       (BR[slug] ? '<section><h3>مراكز الخدمة والتركيب في ' + n + "</h3><p>بعد الشراء نوجّهك إلى أقرب مركز خدمة لتركيب إطاراتك.</p>" + brCards(BR[slug]) + "</section>" : "") +
       '<section><h3>ماركات الإطارات المتوفرة في ' + n + '</h3><div class="brands" data-k360="brands"></div></section>' +
