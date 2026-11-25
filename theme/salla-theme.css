@@ -765,3 +765,44 @@ body.k360-has-bar:has(.k360-hero) .store-header { top: 38px !important; }
 .k360-foot__pay .k360-bn.mispay { height: 30px; }
 /* Header logo on inner pages: full logo on a black rounded plate */
 .store-header img[src*="221debdd"] { content: url(https://raw.githubusercontent.com/eyadshouk13-lab/kafarat360-images/267998d15e2719cea4b5c6c78a75a2b5f9df1792/brand/logo-wide-transparent.png) !important; width: auto !important; height: 46px !important; max-width: 150px; object-fit: contain; background: #0b0b0f; border-radius: 10px; padding: 2px 8px; box-sizing: content-box; }
+/* ================= Offer slider (k360-ofr): bold full-width slides ================= */
+.k360-ofr { margin: 14px 0 6px; direction: ltr; }
+.k360-ofr__view { overflow: hidden; max-width: 1240px; margin: 0 auto; border-radius: 0; touch-action: pan-y; }
+.k360-ofr__rail { display: flex; transition: transform .55s cubic-bezier(.2,.7,.2,1); will-change: transform; }
+.ofr { position: relative; flex: 0 0 100%; min-height: 300px; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 26px 20px; overflow: hidden; direction: rtl; text-decoration: none !important; color: #fff !important; box-sizing: border-box; }
+.ofr__txt { position: relative; z-index: 2; flex: 1 1 58%; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+.ofr__vis { position: relative; z-index: 1; flex: 0 0 38%; display: flex; align-items: center; justify-content: center; }
+.ofr__tag { background: #fff; color: #111; font-weight: 800; font-size: 12.5px; padding: 6px 12px; border-radius: 6px; }
+.ofr__big { font-size: clamp(56px, 17vw, 112px); line-height: .95; font-weight: 900; letter-spacing: -2px; direction: ltr; unicode-bidi: isolate; }
+.ofr h2 { margin: 0; font-size: clamp(18px, 4.6vw, 28px); line-height: 1.4; font-weight: 800; color: inherit; }
+.ofr__h { font-size: clamp(24px, 6.6vw, 40px) !important; }
+.ofr p { margin: 0; font-size: 14px; line-height: 1.7; opacity: .92; }
+.ofr__btn { margin-top: 8px; background: #fff; color: #111; font-weight: 800; font-size: 14px; padding: 11px 20px; border-radius: 10px; box-shadow: 0 6px 18px rgba(0,0,0,.25); }
+.ofr mark { background: transparent; color: #f5c542; }
+.ofr__vis img { width: min(150px, 34vw); aspect-ratio: 1; border-radius: 50%; object-fit: cover; background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,.35); border: 5px solid rgba(255,255,255,.9); }
+.ofr--bf { background: radial-gradient(90% 120% at 15% 30%, #2a2145 0%, #0b0b0f 70%); }
+.ofr--bf .ofr__big { color: #f5c542; text-shadow: 0 4px 0 rgba(0,0,0,.35); }
+.ofr--bf .ofr__tag { background: #f5c542; }
+.ofr--disc { background: linear-gradient(135deg, #7b3fe4 0%, #4b2296 100%); }
+.ofr--disc .ofr__big { color: #fff; }
+.ofr--van { background: linear-gradient(135deg, #f3ecff 0%, #e4d6ff 100%); color: #1b1530 !important; }
+.ofr--van .ofr__tag { background: #7b3fe4; color: #fff; }
+.ofr--van .ofr__btn { background: #7b3fe4; color: #fff; }
+.ofr__van { width: min(250px, 42vw); height: auto; }
+.ofr--warranty { background: linear-gradient(135deg, #12081f 0%, #2a1458 100%); }
+.ofr__shield { width: 120px; height: 120px; border-radius: 50%; display: grid; place-items: center; font-size: 64px; font-weight: 900; color: #0b0b0f; background: #f5c542; box-shadow: 0 0 0 10px rgba(245,197,66,.25); }
+.ofr--pay { background: linear-gradient(135deg, #0b0b0f 0%, #1f1a33 100%); }
+.ofr__logos { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 4px; }
+.ofr__logos img { height: 34px; width: auto; border-radius: 6px; }
+.ofr__logos img.mp { background: #fff; padding: 4px 8px; }
+.ofr__shield--pay { background: #7b3fe4; color: #fff; font-size: 54px; box-shadow: 0 0 0 10px rgba(123,63,228,.3); }
+.k360-ofr__dots { display: flex; justify-content: center; gap: 8px; margin-top: 12px; }
+.k360-ofr__dots button { width: 9px; height: 9px; padding: 0; border: 0; border-radius: 50%; background: #cfc6e6; cursor: pointer; transition: all .25s; }
+.k360-ofr__dots button.is-on { width: 26px; border-radius: 6px; background: #7b3fe4; }
+@media (min-width: 768px) {
+  .ofr { min-height: 340px; padding: 34px 60px; border-radius: 18px; }
+  .ofr__vis img { width: 220px; }
+  .ofr__van { width: 360px; }
+  .ofr__shield { width: 170px; height: 170px; font-size: 90px; }
+}
+@media (prefers-reduced-motion: reduce) { .k360-ofr__rail { transition: none; } }

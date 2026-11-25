@@ -11,7 +11,7 @@
 (function () {
   "use strict";
 
-  var DATA = "https://cdn.jsdelivr.net/gh/eyadshouk13-lab/kafarat360-theme@cb42a32d2c0f1bb1934170b44cbf275ca10f5156/data/";
+  var DATA = "https://cdn.jsdelivr.net/gh/eyadshouk13-lab/kafarat360-theme@e7c1e33f20ca7352199d185905fec633191ef94b/data/";
   var IMG = "https://raw.githubusercontent.com/eyadshouk13-lab/kafarat360-images/d5004e9/";
   var TYPES = { car: "سيارات ركاب", suv: "SUV ودفع رباعي", truck: "نقل خفيف" };
   var COLLECTIONS = [
@@ -258,7 +258,7 @@
   }
 
   /* ---------- brand strip (website markup) ---------- */
-  var LOGO = "https://raw.githubusercontent.com/eyadshouk13-lab/kafarat360-theme/cb42a32d2c0f1bb1934170b44cbf275ca10f5156/";
+  var LOGO = "https://raw.githubusercontent.com/eyadshouk13-lab/kafarat360-theme/e7c1e33f20ca7352199d185905fec633191ef94b/";
   function brandUrl(b) { return base().replace(/\/?$/, "/") + "b/brand-" + b.i; }
   function initBrands(el) {
     load("brands.json").then(function (bs) {
@@ -332,6 +332,29 @@
   function initDrawer() {
     var ul = document.querySelector(".mm-ocd .main-menu"); if (!ul || ul.children.length) return;
     ul.innerHTML = siteLinks().shop.map(function (l) { return '<li><a href="' + l[0] + '">' + l[1] + "</a></li>"; }).join("");
+  }
+
+  /* ---------- offer slider under the hero: autoplay, dots, swipe ---------- */
+  function initSlider(el) {
+    var rail = el.querySelector(".k360-ofr__rail"), dots = el.querySelector("[data-dots]"); if (!rail || !dots) return;
+    var slides = rail.children, n = slides.length, i = 0, timer = null, sx = null, swiped = false; if (n < 2) return;
+    dots.innerHTML = [].map.call(slides, function (_, k) { return '<button type="button" aria-label="' + (k + 1) + '"></button>'; }).join("");
+    function go(k) {
+      i = (k + n) % n; rail.style.transform = "translateX(" + (-i * 100) + "%)";
+      [].forEach.call(dots.children, function (d, j) { d.classList.toggle("is-on", j === i); });
+    }
+    function play() { clearInterval(timer); timer = setInterval(function () { go(i + 1); }, 5500); }
+    dots.addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; go([].indexOf.call(dots.children, b)); play(); });
+    var view = el.querySelector(".k360-ofr__view");
+    view.addEventListener("pointerdown", function (e) { sx = e.clientX; clearInterval(timer); });
+    view.addEventListener("pointerup", function (e) {
+      if (sx === null) return; var dx = e.clientX - sx; sx = null;
+      if (Math.abs(dx) > 40) { swiped = true; setTimeout(function () { swiped = false; }, 80); go(i + (dx < 0 ? 1 : -1)); }
+      play();
+    });
+    view.addEventListener("pointercancel", function () { sx = null; play(); });
+    view.addEventListener("click", function (e) { if (swiped) e.preventDefault(); }, true);
+    go(0); play();
   }
 
   /* ---------- categories / best sellers switch ---------- */
@@ -733,7 +756,7 @@
   }
 
   /* ---------- start ---------- */
-  var INIT = { finder: initFinder, collections: initCollections, tabs: initTabs, garage: initGarage, shop: initShop, brands: initBrands };
+  var INIT = { slider: initSlider, finder: initFinder, collections: initCollections, tabs: initTabs, garage: initGarage, shop: initShop, brands: initBrands };
   function scan() {
     initPage();
     document.querySelectorAll("[data-k360]:not([data-k360-on])").forEach(function (el) {
