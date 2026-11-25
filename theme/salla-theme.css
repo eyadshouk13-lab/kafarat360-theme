@@ -810,3 +810,7 @@ body.k360-has-bar:has(.k360-hero) .store-header { top: 38px !important; }
 .k360-nav a[href*="k360=offers"] { color: #b8860b !important; font-weight: 800; }
 .k360-nav a[href*="k360=offers"].active { color: #fff !important; }
 .mm-ocd .main-menu li a[href*="k360=offers"] { color: #b8860b; font-weight: 800; }
+/* Offer slider: slides that are Canva images */
+.ofr--img { padding: 0 !important; min-height: 0 !important; background: #0b0b0f; display: block; line-height: 0; }
+.ofr--img img { width: 100%; height: auto; display: block; aspect-ratio: 16 / 9; object-fit: cover; }
+@media (min-width: 768px) { .ofr--img { border-radius: 18px; overflow: hidden; } }
