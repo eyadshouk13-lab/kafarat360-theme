@@ -679,8 +679,8 @@ body.theme-raed { background-color: var(--k-bg); color: var(--k-ink); }
 .theme-raed .k360-site .btn-primary:hover, .theme-raed .k360-site a.btn-primary:hover { color: #fff; }
 
 /* Home: hero video runs to the very top, header floats over it */
-body:has(.k360-hero) .store-header { position: absolute !important; top: 0; left: 0; right: 0; width: 100%; z-index: 30; background: linear-gradient(180deg, rgba(0,0,0,.65), rgba(0,0,0,0)) !important; border: 0 !important; box-shadow: none !important; }
-body:has(.k360-hero) .store-header * { color: #fff !important; border-color: transparent !important; }
+body:has(.k360-hero) .store-header { position: absolute !important; top: 0; left: 0; right: 0; width: 100%; z-index: 30; background: transparent !important; border: 0 !important; box-shadow: none !important; }
+body:has(.k360-hero) .store-header * { color: #fff !important; border-color: transparent !important; text-shadow: 0 1px 4px rgba(0,0,0,.45); }
 body:has(.k360-hero) .store-header [class*="bg-"], body:has(.k360-hero) .store-header .main-nav-container, body:has(.k360-hero) .store-header .inner { background: transparent !important; }
 body:has(.k360-hero) .store-header svg { fill: #fff; }
 .k360-hero__logo { display: none; }
