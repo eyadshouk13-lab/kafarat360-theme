@@ -458,7 +458,7 @@
   /* ---------- Black Friday offer: buy 3, get the 4th free ----------
      Shown to customers only when OFFERS_LIVE is true (or while previewing with ?offers=1).
      The matching "buy 3 get 1 free" special offer must exist in Salla, otherwise the cart charges 4 tires. */
-  var OFFERS_LIVE = false;
+  var OFFERS_LIVE = true;
   function offerOn() {
     try {
       if (/[?&]offers=1(&|$)/.test(location.search)) sessionStorage.setItem("k360-offers", "1");
