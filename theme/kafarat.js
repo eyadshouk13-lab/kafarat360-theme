@@ -343,13 +343,22 @@
     if (!/enablejsapi=1/.test(f.src)) f.src = f.src + "&enablejsapi=1&origin=" + encodeURIComponent(location.origin);
     function boot() {
       try {
-        new YT.Player(f, { events: {
+        var pl = new YT.Player(f, { events: {
           onReady: function (e) { try { e.target.mute(); e.target.playVideo(); } catch (_) {} },
           onStateChange: function (e) {
             if (e.data === 1) box.classList.remove("is-wait");
-            if (e.data === 2 || e.data === 0 || e.data === 5) { try { e.target.playVideo(); } catch (_) {} }
+            if (e.data === 0) { try { e.target.seekTo(0, true); e.target.playVideo(); } catch (_) {} }
+            else if (e.data === 2 || e.data === 5) { try { e.target.playVideo(); } catch (_) {} }
           }
         } });
+        /* watchdog: if the clip ever stops, start it again */
+        setInterval(function () {
+          try {
+            var st = pl.getPlayerState && pl.getPlayerState();
+            if (st === 0) { pl.seekTo(0, true); pl.playVideo(); }
+            else if (st === 2 || st === 5 || st === -1) pl.playVideo();
+          } catch (_) {}
+        }, 1500);
       } catch (_) { box.classList.remove("is-wait"); }
     }
     if (window.YT && YT.Player) boot();
