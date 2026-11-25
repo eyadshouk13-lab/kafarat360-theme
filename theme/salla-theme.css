@@ -920,3 +920,33 @@ body.brands-single:has(.k360-bhead) main > .container > header{display:none}
 .ab-hero.ct .ab-credit{position:absolute;bottom:6px;inset-inline-start:12px;font-size:10px;color:rgba(255,255,255,.7);margin:0}
 .ab-hero.ct .ab-credit a{color:inherit;text-decoration:underline}
 @media(max-width:700px){.ab-hero.ct{min-height:260px}}
+
+/* ===== Home: top tires by brand ===== */
+.top-chips{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:18px}
+.top-chip{display:flex;align-items:center;gap:10px;background:#fff;border:2px solid var(--k-line);border-radius:999px;padding:8px 18px 8px 12px;cursor:pointer;font-weight:800;color:var(--k-ink);font-family:inherit}
+.top-chip span{display:grid;place-items:center;width:46px;height:34px}
+.top-chip img{max-width:100%;max-height:100%;object-fit:contain}
+.top-chip.is-on{border-color:var(--k-brand);background:var(--k-soft);color:var(--k-brand-d)}
+.top-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.top-more{text-align:center;margin-top:18px}
+@media(max-width:900px){.top-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.top-grid{grid-template-columns:1fr}}
+
+/* ===== Home: Saudi map ===== */
+.mp-wrap{display:grid;grid-template-columns:1.3fr 1fr;gap:20px;align-items:center}
+.mp-svg{width:100%;height:auto;background:#fff;border:1px solid var(--k-line);border-radius:20px;padding:10px;box-shadow:var(--k-sh)}
+.mp-land{fill:var(--k-soft);stroke:var(--k-brand);stroke-width:2;stroke-linejoin:round}
+.mp-dot{fill:var(--k-brand);stroke:#fff;stroke-width:2}
+.mp-pulse{fill:rgba(123,63,228,.22);animation:mpp 2.2s ease-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes mpp{0%{transform:scale(.5);opacity:1}100%{transform:scale(1.6);opacity:0}}
+.mp-pin text{font-size:15px;font-weight:800;fill:var(--k-ink);paint-order:stroke;stroke:#fff;stroke-width:4px;font-family:inherit}
+.mp-pin{cursor:pointer}
+.mp-list{display:grid;gap:12px}
+.mp-reg{background:#fff;border:1px solid var(--k-line);border-radius:16px;padding:14px 16px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.mp-reg b{flex:0 0 100%;font-size:15px}
+.mp-reg a{background:var(--k-soft);color:var(--k-brand-d);border-radius:999px;padding:5px 14px;font-weight:700;font-size:14px}
+@media(max-width:800px){.mp-wrap{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.mp-pulse{animation:none}}
+
+/* ===== BNPL logos in the home payments row ===== */
+.k360-pay-row .k360-bn{height:28px;width:auto;max-width:90px;object-fit:contain}

@@ -906,8 +906,57 @@
     });
   }
 
+  /* ---------- home: most used tires (3 brand chips, 6 tires each) ---------- */
+  var TOP_BRANDS = [1009381646, 167120911, 901275145]; /* Michelin, Bridgestone, Continental */
+  function initTop(el) {
+    Promise.all([load("products.json"), load("brands.json")]).then(function (res) {
+      var ps = res[0], bs = res[1], logos = {}, byId = {};
+      bs.forEach(function (b) { byId[b.i] = b; if (b.logo) logos[b.i] = b.logo; });
+      var chips = TOP_BRANDS.map(function (id) { return byId[id]; }).filter(Boolean);
+      var common = {}; CITY_SIZES.forEach(function (s) { common[s.replace(/\s/g, "")] = 1; });
+      function pick(id) {
+        var list = ps.filter(function (p) { return p.bi === id; });
+        list.sort(function (a, b) { return (common[sizeOf(b)] ? 1 : 0) - (common[sizeOf(a)] ? 1 : 0) || (b.s && b.s < b.pr ? 1 : 0) - (a.s && a.s < a.pr ? 1 : 0); });
+        return list.slice(0, 6);
+      }
+      el.innerHTML = '<div class="top-chips"></div><div class="top-grid"></div><div class="top-more"></div>';
+      var bar = el.querySelector(".top-chips"), grid = el.querySelector(".top-grid"), more = el.querySelector(".top-more");
+      bar.innerHTML = chips.map(function (b, i) {
+        return '<button type="button" class="top-chip' + (i ? "" : " is-on") + '" data-b="' + b.i + '"><span>' + (b.logo ? '<img src="' + LOGO + esc(b.logo) + '" alt="' + esc(b.ar) + '">' : esc(b.en)) + "</span><b>" + esc(b.ar) + "</b></button>";
+      }).join("");
+      function show(id) {
+        grid.innerHTML = pick(id).map(function (p) { return siteCard(p, logos); }).join("");
+        more.innerHTML = '<a class="k360-btn k360-btn--ghost" href="' + brandUrl(byId[id]) + '">عرض كل إطارات ' + esc(byId[id].ar) + "</a>";
+      }
+      bar.addEventListener("click", function (e) {
+        var c = e.target.closest(".top-chip"); if (!c) return;
+        [].forEach.call(bar.children, function (x) { x.classList.toggle("is-on", x === c); });
+        show(+c.getAttribute("data-b"));
+      });
+      show(chips[0].i);
+    }).catch(function () { fail(el); });
+  }
+
+  /* ---------- home: Saudi map with the cities we serve ---------- */
+  var MAP_OUTLINE = [[34.95, 29.35], [36.1, 29.2], [37.3, 30.0], [38.0, 30.6], [38.8, 31.9], [40.0, 31.9], [41.0, 31.2], [42.1, 31.1], [44.7, 29.2], [46.5, 29.1], [47.5, 28.5], [48.4, 28.5], [48.8, 27.7], [49.6, 27.0], [50.1, 26.4], [50.2, 25.8], [50.8, 25.3], [51.6, 24.3], [52.6, 23.0], [55.2, 22.7], [55.7, 22.0], [55.0, 20.0], [52.0, 19.0], [48.0, 18.2], [44.5, 17.4], [43.2, 16.7], [42.6, 16.9], [41.8, 18.5], [41.1, 19.5], [40.2, 20.6], [39.2, 21.5], [38.5, 23.0], [38.0, 24.1], [36.8, 25.5], [35.7, 27.3]];
+  var MAP_CITIES = [["riyadh", "الرياض", 46.72, 24.71, 0, -12], ["jeddah", "جدة", 39.17, 21.54, 0, 24], ["makkah", "مكة المكرمة", 39.83, 21.39, 56, 0], ["dammam", "الدمام", 50.1, 26.43, 4, -14], ["khobar", "الخبر", 50.21, 26.28, 4, 22], ["ahsa", "الأحساء", 49.59, 25.38, -42, 4], ["yanbu", "ينبع", 38.06, 24.09, -8, -12], ["abha", "أبها", 42.5, 18.22, 0, 24], ["hail", "حائل", 41.69, 27.52, 0, -12]];
+  var MAP_REGIONS = [["المنطقة الغربية", ["jeddah", "makkah", "yanbu"]], ["المنطقة الوسطى", ["riyadh", "hail"]], ["المنطقة الشرقية", ["dammam", "khobar", "ahsa"]], ["المنطقة الجنوبية", ["abha"]]];
+  function initMap(el) {
+    var X = function (lon) { return ((lon - 34.5) * 27.9).toFixed(1); }, Y = function (lat) { return ((32 - lat) * 30.6).toFixed(1); };
+    var poly = MAP_OUTLINE.map(function (p) { return X(p[0]) + "," + Y(p[1]); }).join(" ");
+    var byKey = {}; CITIES.forEach(function (c) { byKey[c[0]] = c; });
+    var pins = MAP_CITIES.map(function (m) {
+      var c = byKey[m[0]], x = X(m[2]), y = Y(m[3]);
+      return '<a href="' + cityUrl(c) + '" class="mp-pin"><circle cx="' + x + '" cy="' + y + '" r="14" class="mp-pulse"/><circle cx="' + x + '" cy="' + y + '" r="6" class="mp-dot"/><text x="' + (+x + m[4]) + '" y="' + (+y + m[5]) + '" text-anchor="middle">' + m[1] + "</text></a>";
+    }).join("");
+    el.innerHTML = '<div class="mp-wrap"><svg viewBox="0 0 600 490" class="mp-svg" role="img" aria-label="خريطة مدن الخدمة"><polygon points="' + poly + '" class="mp-land"/>' + pins + "</svg>" +
+      '<div class="mp-list">' + MAP_REGIONS.map(function (r) {
+        return '<div class="mp-reg"><b>' + r[0] + "</b>" + r[1].map(function (k) { return '<a href="' + cityUrl(byKey[k]) + '">&#128205; ' + byKey[k][1] + "</a>"; }).join("") + "</div>";
+      }).join("") + "</div></div>";
+  }
+
   /* ---------- start ---------- */
-  var INIT = { slider: initSlider, finder: initFinder, collections: initCollections, tabs: initTabs, garage: initGarage, shop: initShop, brands: initBrands };
+  var INIT = { slider: initSlider, finder: initFinder, collections: initCollections, tabs: initTabs, garage: initGarage, shop: initShop, brands: initBrands, top: initTop, map: initMap };
   function scan() {
     initPage();
     initBrandPage();
