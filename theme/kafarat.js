@@ -274,7 +274,7 @@
     if (document.querySelector(".k360-nav")) return;
     var header = document.querySelector(".store-header"); if (!header) return;
     var home = base().replace(/\/?$/, "/");
-    var links = [[home, "الصفحة الرئيسية", ""], [pageUrl("shop"), "جميع المنتجات", "shop"], [pageUrl("best"), "الأكثر مبيعاً", "best"],
+    var links = [[home, "الصفحة الرئيسية", ""], [pageUrl("offers"), "&#x1F525; العروض", "offers"], [pageUrl("shop"), "جميع المنتجات", "shop"], [pageUrl("best"), "الأكثر مبيعاً", "best"],
       [home + "b/brand-167120911", "بريجستون", ""], [home + "#k360-garage", "&#x1F3E0; ماي جراش", ""], [pageUrl("cats"), "جميع التصنيفات", "cats"],
       [pageUrl("brands"), "العلامات التجارية", "brands"], [home + "#k360-finder", "ابحث بالمقاس", ""]];
     var cur = new URLSearchParams(location.search).get("k360") || "";
@@ -291,7 +291,7 @@
     var home = base().replace(/\/?$/, "/");
     var l = function (n, t) { return [pageUrl(n), t]; };
     return {
-      shop: [[home, "الصفحة الرئيسية"], l("shop", "جميع المنتجات"), l("best", "الأكثر مبيعاً"), l("cats", "جميع التصنيفات"), l("brands", "العلامات التجارية"), [home + "#k360-finder", "ابحث بالمقاس"], [home + "#k360-garage", "ماي جراش"]],
+      shop: [[home, "الصفحة الرئيسية"], l("offers", "العروض"), l("shop", "جميع المنتجات"), l("best", "الأكثر مبيعاً"), l("cats", "جميع التصنيفات"), l("brands", "العلامات التجارية"), [home + "#k360-finder", "ابحث بالمقاس"], [home + "#k360-garage", "ماي جراش"]],
       about: [l("why", "لماذا كفرات 360")],
       cats: [[pageUrl("shop", { t: "car", title: TYPES.car }), "إطارات " + TYPES.car], [pageUrl("shop", { t: "suv", title: TYPES.suv }), "إطارات " + TYPES.suv], [pageUrl("shop", { t: "truck", title: TYPES.truck }), "إطارات " + TYPES.truck], [pageUrl("offers"), "عروض الإطارات"]],
       help: [l("sizes", "كيف تقرأ مقاس الإطار"), l("delivery", "التسليم والتركيب"), l("warranty", "ضمان الإطارات"), l("returns", "الإرجاع واسترداد المبلغ"), l("privacy", "سياسة الخصوصية"), l("terms", "الشروط والأحكام"), l("support", "خدمة العملاء")]

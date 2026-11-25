@@ -806,3 +806,7 @@ body.k360-has-bar:has(.k360-hero) .store-header { top: 38px !important; }
   .ofr__shield { width: 170px; height: 170px; font-size: 90px; }
 }
 @media (prefers-reduced-motion: reduce) { .k360-ofr__rail { transition: none; } }
+/* Offers link stands out in the menus */
+.k360-nav a[href*="k360=offers"] { color: #b8860b !important; font-weight: 800; }
+.k360-nav a[href*="k360=offers"].active { color: #fff !important; }
+.mm-ocd .main-menu li a[href*="k360=offers"] { color: #b8860b; font-weight: 800; }
