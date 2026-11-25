@@ -667,3 +667,9 @@ body.theme-raed { background-color: var(--k-bg); color: var(--k-ink); }
 
 /* hidden panes must stay hidden even where a component sets display */
 .k360-site [hidden], .k360-cats[hidden] { display: none !important; }
+.theme-raed a.k360-bnr:hover { color: #fff; }
+.theme-raed a.k360-bnr--warranty:hover, .theme-raed a.k360-bnr--finder:hover { color: var(--k-brand-d); }
+.theme-raed a.k360-btn--primary:hover { color: #fff; }
+.theme-raed a.k360-btn--ghost:hover { color: var(--k-ink); }
+.theme-raed .k360-site a:hover { color: inherit; }
+.theme-raed .k360-site .btn-primary:hover, .theme-raed .k360-site a.btn-primary:hover { color: #fff; }
