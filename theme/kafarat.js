@@ -913,44 +913,78 @@
       var ps = res[0], bs = res[1], logos = {}, byId = {};
       bs.forEach(function (b) { byId[b.i] = b; if (b.logo) logos[b.i] = b.logo; });
       var chips = TOP_BRANDS.map(function (id) { return byId[id]; }).filter(Boolean);
+      var others = bs.filter(function (b) { return b.n > 0 && TOP_BRANDS.indexOf(b.i) < 0; }).sort(function (a, b) { return b.n - a.n; });
       var common = {}; CITY_SIZES.forEach(function (s) { common[s.replace(/\s/g, "")] = 1; });
-      function pick(id) {
+      function pick(id, n) {
         var list = ps.filter(function (p) { return p.bi === id; });
         list.sort(function (a, b) { return (common[sizeOf(b)] ? 1 : 0) - (common[sizeOf(a)] ? 1 : 0) || (b.s && b.s < b.pr ? 1 : 0) - (a.s && a.s < a.pr ? 1 : 0); });
-        return list.slice(0, 6);
+        return list.slice(0, n);
       }
-      el.innerHTML = '<div class="top-chips"></div><div class="top-grid"></div><div class="top-more"></div>';
-      var bar = el.querySelector(".top-chips"), grid = el.querySelector(".top-grid"), more = el.querySelector(".top-more");
-      bar.innerHTML = chips.map(function (b, i) {
-        return '<button type="button" class="top-chip' + (i ? "" : " is-on") + '" data-b="' + b.i + '"><span>' + (b.logo ? '<img src="' + LOGO + esc(b.logo) + '" alt="' + esc(b.ar) + '">' : esc(b.en)) + "</span><b>" + esc(b.ar) + "</b></button>";
-      }).join("");
-      function show(id) {
-        grid.innerHTML = pick(id).map(function (p) { return siteCard(p, logos); }).join("");
-        more.innerHTML = '<a class="k360-btn k360-btn--ghost" href="' + brandUrl(byId[id]) + '">عرض كل إطارات ' + esc(byId[id].ar) + "</a>";
+      function hot() {
+        var cols = chips.map(function (b) { return pick(b.i, 4); }), out = [];
+        for (var i = 0; i < 4; i++) cols.forEach(function (c) { if (c[i]) out.push(c[i]); });
+        return out.slice(0, 10);
       }
-      bar.addEventListener("click", function (e) {
-        var c = e.target.closest(".top-chip"); if (!c) return;
-        [].forEach.call(bar.children, function (x) { x.classList.toggle("is-on", x === c); });
-        show(+c.getAttribute("data-b"));
+      el.innerHTML = '<div class="top-chips"></div><div class="top-all" hidden></div><div class="top-grid"></div><div class="top-more"></div>';
+      var bar = el.querySelector(".top-chips"), all = el.querySelector(".top-all"), grid = el.querySelector(".top-grid"), more = el.querySelector(".top-more");
+      var logoOf = function (b) { return b.logo ? '<img src="' + LOGO + esc(b.logo) + '" alt="' + esc(b.ar) + '">' : esc(b.en); };
+      bar.innerHTML = '<button type="button" class="top-chip top-hot is-on" data-b="hot"><b>&#9733; الأكثر استخداماً</b></button>' +
+        chips.map(function (b) { return '<button type="button" class="top-chip" data-b="' + b.i + '"><span>' + logoOf(b) + "</span><b>" + esc(b.ar) + "</b></button>"; }).join("") +
+        '<button type="button" class="top-chip top-all-btn" aria-expanded="false"><b>كل الماركات &#9662;</b></button>';
+      all.innerHTML = others.map(function (b) { return '<button type="button" class="top-mini" data-b="' + b.i + '"><span>' + logoOf(b) + "</span><b>" + esc(b.ar) + "</b></button>"; }).join("");
+      function show(key) {
+        var list = key === "hot" ? hot() : pick(+key, 10);
+        grid.innerHTML = list.map(function (p) { return siteCard(p, logos); }).join("");
+        more.innerHTML = key === "hot" ? '<a class="k360-btn k360-btn--ghost" href="' + pageUrl("shop") + '">عرض كل المنتجات</a>' : '<a class="k360-btn k360-btn--ghost" href="' + brandUrl(byId[+key]) + '">عرض كل إطارات ' + esc(byId[+key].ar) + "</a>";
+        [].forEach.call(el.querySelectorAll("[data-b]"), function (x) { x.classList.toggle("is-on", x.getAttribute("data-b") === String(key)); });
+      }
+      el.addEventListener("click", function (e) {
+        var t = e.target.closest(".top-all-btn");
+        if (t) { all.hidden = !all.hidden; t.setAttribute("aria-expanded", String(!all.hidden)); t.classList.toggle("is-on", !all.hidden); return; }
+        var c = e.target.closest("[data-b]"); if (!c) return;
+        show(c.getAttribute("data-b"));
       });
-      show(chips[0].i);
+      show("hot");
     }).catch(function () { fail(el); });
   }
 
   /* ---------- home: Saudi map with the cities we serve ---------- */
   var MAP_OUTLINE = [[34.95, 29.35], [36.1, 29.2], [37.3, 30.0], [38.0, 30.6], [38.8, 31.9], [40.0, 31.9], [41.0, 31.2], [42.1, 31.1], [44.7, 29.2], [46.5, 29.1], [47.5, 28.5], [48.4, 28.5], [48.8, 27.7], [49.6, 27.0], [50.1, 26.4], [50.2, 25.8], [50.8, 25.3], [51.6, 24.3], [52.6, 23.0], [55.2, 22.7], [55.7, 22.0], [55.0, 20.0], [52.0, 19.0], [48.0, 18.2], [44.5, 17.4], [43.2, 16.7], [42.6, 16.9], [41.8, 18.5], [41.1, 19.5], [40.2, 20.6], [39.2, 21.5], [38.5, 23.0], [38.0, 24.1], [36.8, 25.5], [35.7, 27.3]];
-  var MAP_CITIES = [["riyadh", "الرياض", 46.72, 24.71, 0, -12], ["jeddah", "جدة", 39.17, 21.54, 0, 24], ["makkah", "مكة المكرمة", 39.83, 21.39, 56, 0], ["dammam", "الدمام", 50.1, 26.43, 4, -14], ["khobar", "الخبر", 50.21, 26.28, 4, 22], ["ahsa", "الأحساء", 49.59, 25.38, -42, 4], ["yanbu", "ينبع", 38.06, 24.09, -8, -12], ["abha", "أبها", 42.5, 18.22, 0, 24], ["hail", "حائل", 41.69, 27.52, 0, -12]];
-  var MAP_REGIONS = [["المنطقة الغربية", ["jeddah", "makkah", "yanbu"]], ["المنطقة الوسطى", ["riyadh", "hail"]], ["المنطقة الشرقية", ["dammam", "khobar", "ahsa"]], ["المنطقة الجنوبية", ["abha"]]];
+  /* approximate administrative regions (shared border nodes so they tile the country) */
+  var MN = { P0: [34.95, 29.35], P1: [36.1, 29.2], P2: [37.3, 30.0], P3: [38.0, 30.6], P4: [38.8, 31.9], P5: [40.0, 31.9], P6: [41.0, 31.2], P7: [42.1, 31.1], P8: [44.7, 29.2], P9: [46.5, 29.1], P10: [47.5, 28.5], P11: [48.4, 28.5], P12: [48.8, 27.7], P13: [49.6, 27.0], P14: [50.1, 26.4], P15: [50.2, 25.8], P16: [50.8, 25.3], P17: [51.6, 24.3], P18: [52.6, 23.0], P19: [55.2, 22.7], P20: [55.7, 22.0], P21: [55.0, 20.0], P22: [52.0, 19.0], P23: [48.0, 18.2], P24: [44.5, 17.4], P25: [43.2, 16.7], P26: [42.6, 16.9], P27: [41.8, 18.5], P28: [41.1, 19.5], P29: [40.2, 20.6], P30: [39.2, 21.5], P31: [38.5, 23.0], P32: [38.0, 24.1], P33: [36.8, 25.5], P34: [35.7, 27.3],
+    N1: [46.0, 28.4], N2: [45.0, 27.4], N3: [38.0, 29.5], H1: [38.9, 28.3], H2: [42.0, 28.3], H3: [43.5, 27.6], H4: [43.3, 26.4], H5: [41.5, 26.4], H6: [38.9, 26.4], T1: [37.9, 25.9],
+    R1: [45.2, 26.5], R2: [45.3, 25.4], R3: [43.0, 25.4], M1: [42.3, 24.0], M2: [40.8, 23.2], M3: [39.2, 23.2], Rs4: [43.5, 22.5], A1: [43.2, 21.0], A2: [41.6, 19.9], Rs3: [44.5, 20.0], Rs2: [46.0, 19.9], S1: [44.0, 18.6], S2: [42.9, 17.5],
+    E0: [46.9, 27.7], E1: [47.4, 25.5], E2: [48.6, 23.3], E3: [48.4, 21.0], N4: [47.0, 18.9] };
+  var MAP_REG = [
+    ["tabuk", "تبوك", 0, ["P33", "P34", "P0", "P1", "P2", "N3", "H1", "H6", "T1"], [37.4, 28.2]],
+    ["north", "الحدود الشمالية والجوف", 0, ["P2", "P3", "P4", "P5", "P6", "P7", "P8", "P9", "N1", "N2", "H3", "H2", "H1", "N3"], [41.3, 30.0]],
+    ["hail", "حائل", 1, ["H1", "H2", "H3", "H4", "H5", "H6"], [40.4, 27.0]],
+    ["qassim", "القصيم", 0, ["H5", "H4", "H3", "N2", "R1", "R2", "R3"], [43.7, 26.0]],
+    ["madinah", "المدينة المنورة", 1, ["P33", "T1", "H6", "H5", "R3", "M1", "M2", "M3", "P31", "P32"], [40.2, 24.7]],
+    ["makkah", "منطقة مكة", 1, ["P31", "M3", "M2", "M1", "Rs4", "A1", "A2", "P28", "P29", "P30"], [41.6, 22.2]],
+    ["riyadh", "منطقة الرياض", 1, ["R3", "R2", "R1", "N2", "N1", "E0", "E1", "E2", "E3", "Rs2", "Rs3", "Rs4", "M1"], [45.2, 23.1]],
+    ["east", "المنطقة الشرقية", 1, ["P9", "P10", "P11", "P12", "P13", "P14", "P15", "P16", "P17", "P18", "P19", "P20", "P21", "P22", "P23", "N4", "Rs2", "E3", "E2", "E1", "E0", "N1"], [51.2, 21.4]],
+    ["asir", "عسير", 1, ["P28", "A2", "A1", "Rs3", "S1", "S2", "P27"], [43.1, 19.5]],
+    ["jazan", "جازان", 0, ["P27", "S2", "P25", "P26"], [42.7, 17.3]],
+    ["najran", "نجران", 0, ["S1", "Rs3", "Rs2", "N4", "P23", "P24", "P25", "S2"], [46.0, 18.3]]
+  ];
+  var MAP_CITIES = [["riyadh", "الرياض", 46.72, 24.71, 0, -12], ["jeddah", "جدة", 39.17, 21.54, -14, 24], ["makkah", "مكة المكرمة", 39.83, 21.39, 58, 4], ["dammam", "الدمام", 50.1, 26.43, 8, -14], ["khobar", "الخبر", 50.21, 26.28, 24, 22], ["ahsa", "الأحساء", 49.59, 25.38, -44, 6], ["yanbu", "ينبع", 38.06, 24.09, -10, -12], ["abha", "أبها", 42.5, 18.22, 0, 22], ["hail", "حائل", 41.69, 27.52, 0, -12]];
+  var MAP_GROUPS = [["المنطقة الغربية", ["jeddah", "makkah", "yanbu"]], ["المنطقة الوسطى", ["riyadh", "hail"]], ["المنطقة الشرقية", ["dammam", "khobar", "ahsa"]], ["المنطقة الجنوبية", ["abha"]]];
   function initMap(el) {
     var X = function (lon) { return ((lon - 34.5) * 27.9).toFixed(1); }, Y = function (lat) { return ((32 - lat) * 30.6).toFixed(1); };
-    var poly = MAP_OUTLINE.map(function (p) { return X(p[0]) + "," + Y(p[1]); }).join(" ");
+    var pt = function (p) { return X(p[0]) + "," + Y(p[1]); };
+    var out = MAP_OUTLINE.map(pt).join(" ");
+    var regs = MAP_REG.map(function (r) {
+      return '<polygon points="' + r[3].map(function (k) { return pt(MN[k]); }).join(" ") + '" class="mp-reg-poly' + (r[2] ? " is-svc" : "") + '"/>';
+    }).join("");
+    var names = MAP_REG.map(function (r) { return '<text x="' + X(r[4][0]) + '" y="' + Y(r[4][1]) + '" class="mp-rname" text-anchor="middle">' + r[1] + "</text>"; }).join("");
     var byKey = {}; CITIES.forEach(function (c) { byKey[c[0]] = c; });
     var pins = MAP_CITIES.map(function (m) {
       var c = byKey[m[0]], x = X(m[2]), y = Y(m[3]);
       return '<a href="' + cityUrl(c) + '" class="mp-pin"><circle cx="' + x + '" cy="' + y + '" r="14" class="mp-pulse"/><circle cx="' + x + '" cy="' + y + '" r="6" class="mp-dot"/><text x="' + (+x + m[4]) + '" y="' + (+y + m[5]) + '" text-anchor="middle">' + m[1] + "</text></a>";
     }).join("");
-    el.innerHTML = '<div class="mp-wrap"><svg viewBox="0 0 600 490" class="mp-svg" role="img" aria-label="خريطة مدن الخدمة"><polygon points="' + poly + '" class="mp-land"/>' + pins + "</svg>" +
-      '<div class="mp-list">' + MAP_REGIONS.map(function (r) {
+    el.innerHTML = '<div class="mp-wrap"><div><svg viewBox="0 0 600 490" class="mp-svg" role="img" aria-label="خريطة مناطق وحدود مدن الخدمة">' + regs + '<polygon points="' + out + '" class="mp-border"/>' + names + pins + '</svg><p class="mp-note">حدود المناطق تقريبية. المناطق الملوّنة تصلها خدماتنا.</p></div>' +
+      '<div class="mp-list">' + MAP_GROUPS.map(function (r) {
         return '<div class="mp-reg"><b>' + r[0] + "</b>" + r[1].map(function (k) { return '<a href="' + cityUrl(byKey[k]) + '">&#128205; ' + byKey[k][1] + "</a>"; }).join("") + "</div>";
       }).join("") + "</div></div>";
   }
@@ -981,6 +1015,11 @@
       e.preventDefault(); e.stopPropagation();
       addToCart(+b.getAttribute("data-add"), +b.getAttribute("data-q"), b);
     }, true);
+    var selPkg = function (e) {
+      var b = e.target.closest && e.target.closest(".pkgs .pkg"); if (!b) return;
+      [].forEach.call(b.parentNode.children, function (x) { x.classList.toggle("sel", x === b); });
+    };
+    document.addEventListener("pointerover", selPkg); document.addEventListener("pointerdown", selPkg); document.addEventListener("focusin", selPkg);
     load("brands.json").then(function (bs) { bs.forEach(function (x) { if (x.logo) LOGOS[x.i] = x.logo; }); }).catch(function () {}).then(scan);
 
     new MutationObserver(queue).observe(document.body, { childList: true, subtree: true });
