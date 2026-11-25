@@ -309,7 +309,7 @@
       '<div class="k360-foot__feat">' +
       '<div><b>منتجات أصلية</b><span>إطارات أصلية من أشهر الماركات العالمية</span></div>' +
       '<div><b>ضمان الوكيل</b><span>مدة الضمان تظهر في صفحة كل منتج</span></div>' +
-      '<div><b>مدفوعات آمنة</b><span>ادفع بثقة عبر طرق الدفع المتاحة</span></div>' +
+      '<div><b>مدفوعات آمنة</b><span>ادفع بثقة أو قسّطها مع تابي وتمارا وMISpay</span></div>' +
       '<div><b>تركيب عند بابك</b><span>توصيل وتركيب في كل مدن المملكة</span></div></div>' +
       '<div class="k360-foot__in">' +
       '<div class="k360-foot__brand"><b>كفرات 360</b><p>إطارات أصلية بتواريخ جديدة من أشهر الماركات العالمية، توصيل وتركيب عند باب بيتك في كل مدن المملكة.</p></div>' +
@@ -318,7 +318,8 @@
       grp("help", "المساعدة والمشورة", L.help) +
       '<details class="k360-foot__grp" data-g="contact"><summary>تواصل معنا</summary><ul><li><a href="tel:' + PHONE + '" dir="ltr">' + PHONE + '</a></li><li><a href="' + pageUrl("support") + '">خدمة العملاء</a></li></ul></details>' +
       "</div>" +
-      (pay.length ? '<div class="k360-foot__pay"><span>ادفع بثقة عبر</span>' + pay.map(function (s) { return '<img src="' + s + '" alt="" loading="lazy">'; }).join("") + "</div>" : "") +
+      '<div class="k360-foot__pay"><span>ادفع بثقة عبر</span>' + pay.map(function (s) { return '<img src="' + s + '" alt="" loading="lazy">'; }).join("") +
+      '<em class="k360-chip tabby">tabby</em><em class="k360-chip tamara">tamara</em><em class="k360-chip mispay">MISpay</em></div>' +
       '<div class="k360-foot__bar"><span>السجل التجاري 7040763810</span><span>&copy; ' + new Date().getFullYear() + " كفرات 360. جميع الحقوق محفوظة.</span></div>";
     Array.prototype.forEach.call(f.children, function (c) { c.style.display = "none"; });
     f.appendChild(box);
