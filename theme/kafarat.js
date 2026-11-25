@@ -286,6 +286,37 @@
     header.parentNode.insertBefore(nav, header.nextSibling);
   }
 
+  /* ---------- shared store links: footer + mobile drawer (Salla returns no menus) ---------- */
+  function siteLinks() {
+    var home = base().replace(/\/?$/, "/");
+    return {
+      shop: [[home, "الصفحة الرئيسية"], [pageUrl("shop"), "جميع المنتجات"], [pageUrl("best"), "الأكثر مبيعاً"], [pageUrl("cats"), "جميع التصنيفات"], [pageUrl("brands"), "العلامات التجارية"], [home + "#k360-finder", "ابحث بالمقاس"], [home + "#k360-garage", "ماي جراش"]],
+      info: []  /* policy pages are added here once their text is approved */
+    };
+  }
+
+  function initFooter() {
+    var f = document.querySelector(".store-footer"); if (!f || f.querySelector(".k360-foot")) return;
+    var L = siteLinks();
+    var col = function (title, arr) { return arr.length ? '<div class="k360-foot__col"><h4>' + title + "</h4><ul>" + arr.map(function (l) { return '<li><a href="' + l[0] + '">' + l[1] + "</a></li>"; }).join("") + "</ul></div>" : ""; };
+    var box = document.createElement("div");
+    box.className = "k360-foot";
+    box.innerHTML =
+      '<div class="k360-foot__in">' +
+      '<div class="k360-foot__brand"><b>كفرات 360</b><p>إطارات أصلية بتواريخ جديدة من أشهر الماركات العالمية، توصيل وتركيب عند باب بيتك في كل مدن المملكة.</p></div>' +
+      col("روابط مهمة", L.shop) + col("المتجر", L.info) +
+      '<div class="k360-foot__col"><h4>تواصل معنا</h4><ul><li><a href="tel:+966555023836" dir="ltr">+966555023836</a></li></ul></div>' +
+      "</div>" +
+      '<div class="k360-foot__bar"><span>السجل التجاري 7040763810</span><span>&copy; ' + new Date().getFullYear() + " كفرات 360. جميع الحقوق محفوظة.</span></div>";
+    Array.prototype.forEach.call(f.children, function (c) { c.style.display = "none"; });
+    f.appendChild(box);
+  }
+
+  function initDrawer() {
+    var ul = document.querySelector(".mm-ocd .main-menu"); if (!ul || ul.children.length) return;
+    ul.innerHTML = siteLinks().shop.map(function (l) { return '<li><a href="' + l[0] + '">' + l[1] + "</a></li>"; }).join("");
+  }
+
   /* ---------- categories / best sellers switch ---------- */
   function initTabs(el) {
     var host = el.closest(".s-block--bundle-html-content") || el.closest(".s-block");
@@ -588,6 +619,8 @@
     for (var i = 0; i < cards.length; i++) { addRibbon(cards[i]); enhanceCard(cards[i]); }
     initPackages();
     initNav();
+    initFooter();
+    initDrawer();
   }
   var queued = false;
   function queue() { if (queued) return; queued = true; setTimeout(function () { queued = false; scan(); }, 150); }

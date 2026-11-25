@@ -687,3 +687,15 @@ body:has(.k360-hero) .store-header svg { fill: #fff; }
 /* Hero fits the video exactly on phones; transparent logo in the floating header */
 @media (max-width: 767px) { .k360-hero { height: 177.8vw !important; min-height: 0 !important; max-height: none !important; } }
 body:has(.k360-hero) .store-header img[src*="221debdd"] { content: url(https://raw.githubusercontent.com/eyadshouk13-lab/kafarat360-images/267998d15e2719cea4b5c6c78a75a2b5f9df1792/brand/logo-wide-transparent.png) !important; width: auto !important; height: 44px !important; max-width: 150px; object-fit: contain; background: transparent !important; }
+/* Custom footer + mobile drawer links */
+.store-footer .k360-foot { background: #14101f; color: #e9e5f5; direction: rtl; }
+.k360-foot__in { max-width: 1180px; margin: 0 auto; padding: 32px 16px 20px; display: grid; gap: 24px; grid-template-columns: 1fr; }
+@media (min-width: 768px) { .k360-foot__in { grid-template-columns: 1.6fr 1fr 1fr 1fr; } }
+.k360-foot__brand b { display: block; font-size: 20px; color: #fff; margin-bottom: 8px; }
+.k360-foot__brand p { margin: 0; font-size: 14px; line-height: 1.8; color: #bdb6d6; }
+.k360-foot h4 { margin: 0 0 10px; font-size: 15px; color: #fff; }
+.k360-foot ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.k360-foot a { color: #cfc8e8; text-decoration: none; font-size: 14px; }
+.k360-foot a:hover { color: #fff; text-decoration: underline; }
+.k360-foot__bar { border-top: 1px solid rgba(255,255,255,.12); max-width: 1180px; margin: 0 auto; padding: 14px 16px 22px; display: flex; flex-wrap: wrap; gap: 8px 16px; justify-content: space-between; font-size: 13px; color: #a79fc4; }
+.mm-ocd .main-menu li a { display: block; padding: 14px 16px; color: #1b1530; font-weight: 600; border-bottom: 1px solid #eee; text-decoration: none; }
