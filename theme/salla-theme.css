@@ -752,3 +752,7 @@ body.k360-has-bar:has(.k360-hero) .store-header { top: 38px !important; }
 .k360-chip.tabby { background: #3bffc1; color: #0b0b0f; }
 .k360-chip.tamara { background: #ffd7c4; color: #1b1530; }
 .k360-chip.mispay { background: #fff; color: #5b2d91; }
+/* Installment badges on every product card */
+.k360-bnpl { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 10px; padding-top: 10px; border-top: 1px dashed #e3def2; font-size: 12px; color: #6b6585; }
+.k360-bnpl .k360-chip { font-size: 11px; padding: 5px 8px; border-radius: 6px; }
+.k360-bnpl .k360-chip.mispay { background: #f3ecff; border: 1px solid #d9c9f7; }

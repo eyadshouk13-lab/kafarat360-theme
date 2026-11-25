@@ -466,6 +466,7 @@
       return OFFERS_LIVE || sessionStorage.getItem("k360-offers") === "1";
     } catch (e) { return OFFERS_LIVE; }
   }
+  var BNPL = '<div class="k360-bnpl"><span>قسّطها مع</span><em class="k360-chip tabby">tabby</em><em class="k360-chip tamara">tamara</em><em class="k360-chip mispay">MISpay</em></div>';
   function tiresCost(u, n) { return offerOn() ? u * (n - Math.floor(n / 4)) : u * n; }
   function pk4(p, u, id) {
     var on = offerOn(), off = p.s && p.s < p.pr, was = on ? p.pr * 4 : (off ? p.pr * 4 : 0);
@@ -548,7 +549,7 @@
       '<div class="pkgs">' +
       '<button type="button" class="pkg" data-add="' + p.i + '" data-q="2"><span class="pkg-t">باقة كفرين</span><b>' + money(u * 2) + "</b>" + (off ? "<s>" + money(p.pr * 2) + "</s>" : "") + "<small>🛒 أضف</small></button>" +
       pk4(p, u, p.i) +
-      "</div></div></article>";
+      "</div>" + BNPL + "</div></article>";
   }
 
   function addToCart(id, q, btn) {
@@ -723,7 +724,7 @@
         '<div class="price"><b>' + money(u) + "</b>" + (off ? "<s>" + money(p.pr) + "</s>" : "") + "<small>للإطار</small></div>" +
         '<div class="pkgs">' +
         '<button type="button" class="pkg" data-add="' + id + '" data-q="2"><span class="pkg-t">باقة كفرين</span><b>' + money(u * 2) + "</b>" + (off ? "<s>" + money(p.pr * 2) + "</s>" : "") + "<small>&#x1F6D2; أضف</small></button>" +
-        pk4(p, u, id) + "</div>";
+        pk4(p, u, id) + "</div>" + BNPL;
       content.appendChild(box);
       cardEl.classList.add("k360-has-pk");
     });
