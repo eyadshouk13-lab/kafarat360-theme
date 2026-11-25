@@ -319,7 +319,7 @@
       '<details class="k360-foot__grp" data-g="contact"><summary>تواصل معنا</summary><ul><li><a href="tel:' + PHONE + '" dir="ltr">' + PHONE + '</a></li><li><a href="' + pageUrl("support") + '">خدمة العملاء</a></li></ul></details>' +
       "</div>" +
       '<div class="k360-foot__pay"><span>ادفع بثقة عبر</span>' + pay.map(function (s) { return '<img src="' + s + '" alt="" loading="lazy">'; }).join("") +
-      '<em class="k360-chip tabby">tabby</em><em class="k360-chip tamara">tamara</em><em class="k360-chip mispay">MISpay</em></div>' +
+      BNPL_IMGS + "</div>" +
       '<div class="k360-foot__bar"><span>السجل التجاري 7040763810</span><span>&copy; ' + new Date().getFullYear() + " كفرات 360. جميع الحقوق محفوظة.</span></div>";
     Array.prototype.forEach.call(f.children, function (c) { c.style.display = "none"; });
     f.appendChild(box);
@@ -466,7 +466,9 @@
       return OFFERS_LIVE || sessionStorage.getItem("k360-offers") === "1";
     } catch (e) { return OFFERS_LIVE; }
   }
-  var BNPL = '<div class="k360-bnpl"><span>قسّطها مع</span><em class="k360-chip tabby">tabby</em><em class="k360-chip tamara">tamara</em><em class="k360-chip mispay">MISpay</em></div>';
+  var PAYLOGO = "https://cdn.jsdelivr.net/gh/eyadshouk13-lab/kafarat360-theme@3c0415ceb5f9e34ac6ece8b5bd6d55cc5a8d85ee/pay/";
+  var BNPL_IMGS = '<img class="k360-bn tabby" src="' + PAYLOGO + 'tabby.svg" alt="Tabby" loading="lazy"><img class="k360-bn tamara" src="' + PAYLOGO + 'tamara.svg" alt="Tamara" loading="lazy"><img class="k360-bn mispay" src="' + PAYLOGO + 'mispay.png" alt="MISpay" loading="lazy">';
+  var BNPL = '<div class="k360-bnpl"><span>قسّطها مع</span>' + BNPL_IMGS + "</div>";
   function tiresCost(u, n) { return offerOn() ? u * (n - Math.floor(n / 4)) : u * n; }
   function pk4(p, u, id) {
     var on = offerOn(), off = p.s && p.s < p.pr, was = on ? p.pr * 4 : (off ? p.pr * 4 : 0);

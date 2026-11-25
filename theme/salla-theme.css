@@ -756,3 +756,10 @@ body.k360-has-bar:has(.k360-hero) .store-header { top: 38px !important; }
 .k360-bnpl { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 10px; padding-top: 10px; border-top: 1px dashed #e3def2; font-size: 12px; color: #6b6585; }
 .k360-bnpl .k360-chip { font-size: 11px; padding: 5px 8px; border-radius: 6px; }
 .k360-bnpl .k360-chip.mispay { background: #f3ecff; border: 1px solid #d9c9f7; }
+/* Real partner logos for installments */
+.k360-bn { height: 24px; width: auto; display: inline-block; vertical-align: middle; border-radius: 5px; }
+.k360-bn.mispay { background: #fff; padding: 2px 6px; height: 26px; }
+.k360-bnpl .k360-bn { height: 20px; }
+.k360-bnpl .k360-bn.mispay { height: 22px; }
+.k360-foot__pay .k360-bn { height: 28px; }
+.k360-foot__pay .k360-bn.mispay { height: 30px; }
