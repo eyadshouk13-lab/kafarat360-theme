@@ -819,3 +819,14 @@ body.k360-has-bar:has(.k360-hero) .store-header { top: 38px !important; }
 .k360-hero__over.is-wait { opacity: 0; }
 .k360-hero__over, .k360-hero__over iframe { pointer-events: none !important; }
 .k360-hero__shade { pointer-events: auto; }
+/* Hero layout: the text never covers the video */
+@media (max-width: 767px) {
+  .k360-hero { height: auto !important; min-height: 0 !important; padding-bottom: 22px; }
+  .k360-hero__over { top: 0; bottom: auto; height: 128vw; }
+  .k360-hero__shade { bottom: auto; height: 128vw; background: linear-gradient(180deg, rgba(0,0,0,.35) 0%, rgba(0,0,0,0) 28%, rgba(18,8,31,0) 70%, rgba(18,8,31,.95) 100%); }
+  .k360-hero__txt { position: relative; left: auto; right: auto; bottom: auto; margin-top: 128vw; padding: 6px 16px 0; z-index: 3; }
+}
+@media (min-width: 768px) {
+  .k360-hero__over { right: auto; width: 58%; left: 0; }
+  .k360-hero__shade { background: linear-gradient(270deg, rgba(18,8,31,.9) 0%, rgba(18,8,31,.55) 42%, rgba(0,0,0,0) 62%); }
+}
