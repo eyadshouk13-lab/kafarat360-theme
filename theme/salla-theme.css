@@ -727,3 +727,21 @@ body:has(.k360-hero) .store-header img[src*="221debdd"] { content: url(https://r
 .k360-doc p, .k360-doc li { margin: 0 0 8px; }
 .k360-doc ul, .k360-doc ol { padding-inline-start: 22px; }
 .k360-doc a { color: #7b3fe4; text-decoration: underline; }
+/* Black Friday moving bar */
+.k360-bar { display: block; background: #0b0b0f; color: #fff !important; overflow: hidden; height: 38px; line-height: 38px; position: relative; z-index: 60; text-decoration: none !important; font-size: 13.5px; font-weight: 700; }
+.k360-bar__track { display: flex; width: max-content; direction: ltr; animation: k360-bar 34s linear infinite; }
+.k360-bar:hover .k360-bar__track { animation-play-state: paused; }
+.k360-bar__track > div { display: flex; flex: none; white-space: nowrap; }
+.k360-bar span { padding: 0 20px; direction: rtl; unicode-bidi: isolate; }
+.k360-bar i { color: #f5c542; font-style: normal; }
+@keyframes k360-bar { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .k360-bar__track { animation: none; } }
+
+/* Offers page */
+.k360-offers { display: grid; gap: 12px; grid-template-columns: 1fr; margin-bottom: 18px; }
+@media (min-width: 700px) { .k360-offers { grid-template-columns: repeat(2, 1fr); } }
+.k360-offer { display: flex; align-items: center; gap: 14px; text-align: right; padding: 16px; border-radius: 16px; background: #fff; border: 2px solid #e6e1f5; cursor: pointer; font-family: inherit; }
+.k360-offer.is-on { border-color: #7b3fe4; box-shadow: 0 8px 24px rgba(123,63,228,.18); }
+.k360-offer > b { flex: none; min-width: 84px; text-align: center; padding: 12px 10px; border-radius: 12px; background: #0b0b0f; color: #f5c542; font-size: 22px; font-weight: 800; }
+.k360-offer strong { display: block; font-size: 16px; color: #1b1530; margin-bottom: 4px; }
+.k360-offer small { color: #6b6585; font-size: 13px; line-height: 1.7; }
