@@ -501,6 +501,23 @@
     }).catch(function () {});
   }
 
+  /* ---------- moving ribbon on the product page image ---------- */
+  function initPageRibbon() {
+    var cfg = window.salla && salla.config;
+    if (!cfg || cfg.get("page.slug") !== "product.single") return;
+    var slider = document.querySelector("salla-slider.details-slider"); if (!slider || slider.querySelector(".k360-rib")) return;
+    var box = slider.querySelector(".swiper") || slider;
+    var promo = document.querySelector(".product-single .s-product-card-promotion-title, .main-content [class*=promotion-title]");
+    var m = promo && promo.textContent.match(/([0-9٠-٩]+)\s*%/);
+    var msg = m ? "خصم حصري " + m[1] + "% ✦ ضمان الوكيل" : "إطارات أصلية ✦ ضمان الوكيل";
+    var seg = ""; for (var i = 0; i < 4; i++) seg += "<span>" + msg + "</span><i>✦</i>";
+    var dv = document.createElement("div");
+    dv.className = "k360-rib k360-rib--pd" + (m ? "" : " k360-rib--alt"); dv.setAttribute("aria-hidden", "true");
+    dv.innerHTML = '<div class="k360-rib__track"><div>' + seg + "</div><div>" + seg + "</div></div>";
+    if (getComputedStyle(box).position === "static") box.style.position = "relative";
+    box.appendChild(dv);
+  }
+
   /* ---------- product card ribbon ---------- */
   function addRibbon(cardEl) {
     var box = cardEl.querySelector(".s-product-card-image");
@@ -1000,6 +1017,7 @@
     var cards = document.querySelectorAll(".s-product-card-entry");
     for (var i = 0; i < cards.length; i++) { addRibbon(cards[i]); enhanceCard(cards[i]); }
     initPackages();
+    initPageRibbon();
     initNav();
     initFooter();
     initDrawer();

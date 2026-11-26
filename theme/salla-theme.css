@@ -1016,3 +1016,8 @@ body:has(.k360-hero) .store-header img[src*="221debdd"]{filter:none}
 .k360-fbtn--call{background:#7B3FE4}
 .k360-fbtn--wa{background:#1fa855}
 @media(max-width:700px){.k360-foot__cta{text-align:center;justify-content:center}}
+
+/* Ribbons: the card ribbon animation was missing; the product page gets the same ribbon */
+@keyframes rib{from{transform:translateX(0)}to{transform:translateX(50%)}}
+.k360-rib--pd{height:30px;z-index:5}
+.k360-rib--pd .k360-rib__track span{font-size:13px}
