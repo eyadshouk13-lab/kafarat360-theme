@@ -311,11 +311,8 @@
     var box = document.createElement("div");
     box.className = "k360-foot";
     box.innerHTML =
-      '<div class="k360-foot__feat">' +
-      '<div><b>منتجات أصلية</b><span>إطارات أصلية من أشهر الماركات العالمية</span></div>' +
-      '<div><b>ضمان الوكيل</b><span>مدة الضمان تظهر في صفحة كل منتج</span></div>' +
-      '<div><b>مدفوعات آمنة</b><span>ادفع بثقة أو قسّطها مع تابي وتمارا وMISpay</span></div>' +
-      '<div><b>تركيب عند بابك</b><span>توصيل وتركيب في كل مدن المملكة</span></div></div>' +
+      '<div class="k360-foot__cta"><div><b>محتار في مقاس إطار سيارتك؟</b><span>فريقنا يساعدك تختار المناسب قبل الطلب.</span></div>' +
+      '<div class="k360-foot__ctab"><a class="k360-fbtn k360-fbtn--call" href="tel:' + PHONE + '">اتصل بنا</a><a class="k360-fbtn k360-fbtn--wa" href="https://wa.me/' + PHONE.replace(/\D/g, "") + '" target="_blank" rel="noopener">واتساب</a></div></div>' +
       '<div class="k360-foot__in">' +
       '<div class="k360-foot__brand"><b>كفرات 360</b><p>إطارات أصلية بتواريخ جديدة من أشهر الماركات العالمية، توصيل وتركيب عند باب بيتك في كل مدن المملكة.</p></div>' +
       grp("about", "شركتنا", L.about) + grp("cats", "الإطارات", L.cats) + grp("areas", "مجالات الخدمة", L.areas) +

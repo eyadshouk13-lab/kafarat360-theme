@@ -1001,3 +1001,18 @@ body.brands-single:has(.k360-bhead) main > .container > header{display:none}
 body.k360-scrolled:has(.k360-hero) .store-header,
 body.k360-scrolled.k360-has-bar:has(.k360-hero) .store-header{position:fixed!important;top:0!important;background:#0b0b0f!important;box-shadow:0 6px 20px rgba(0,0,0,.35)!important;border-bottom:2px solid #7B3FE4!important;transition:background .2s}
 body.k360-scrolled:has(.k360-hero) .store-header *{text-shadow:none}
+
+/* Inner-page header logo: logo alone, no plate */
+.store-header img[src*="221debdd"]{background:transparent!important;border-radius:0!important;padding:0!important;box-sizing:border-box!important;filter:drop-shadow(0 1px 2px rgba(0,0,0,.4))}
+body:has(.k360-hero) .store-header img[src*="221debdd"]{filter:none}
+
+/* Footer: help band instead of the four feature boxes */
+.k360-foot__feat{display:none!important}
+.k360-foot__cta{max-width:1180px;margin:0 auto;padding:22px 16px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;border-bottom:1px solid rgba(255,255,255,.12)}
+.k360-foot__cta b{display:block;font-size:19px;color:#fff;margin-bottom:2px}
+.k360-foot__cta span{color:#b9b9c6;font-size:14px}
+.k360-foot__ctab{display:flex;gap:10px}
+.k360-fbtn{display:inline-block;padding:10px 24px;border-radius:999px;font-weight:800;font-size:15px;color:#fff!important;text-decoration:none}
+.k360-fbtn--call{background:#7B3FE4}
+.k360-fbtn--wa{background:#1fa855}
+@media(max-width:700px){.k360-foot__cta{text-align:center;justify-content:center}}
