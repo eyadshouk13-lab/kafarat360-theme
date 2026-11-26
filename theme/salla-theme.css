@@ -686,7 +686,7 @@ body:has(.k360-hero) .store-header svg { fill: #fff; }
 .k360-hero__logo { display: none; }
 /* Hero fits the video exactly on phones; transparent logo in the floating header */
 @media (max-width: 767px) { .k360-hero { height: 177.8vw !important; min-height: 0 !important; max-height: none !important; } }
-body:has(.k360-hero) .store-header img[src*="221debdd"] { content: url(https://raw.githubusercontent.com/eyadshouk13-lab/kafarat360-images/267998d15e2719cea4b5c6c78a75a2b5f9df1792/brand/logo-wide-transparent.png) !important; width: auto !important; height: 44px !important; max-width: 150px; object-fit: contain; background: transparent !important; }
+body:has(.k360-hero) .store-header img[src*="221debdd"] { content: url(https://cdn.jsdelivr.net/gh/eyadshouk13-lab/kafarat360-images@267998d15e2719cea4b5c6c78a75a2b5f9df1792/brand/logo-wide-transparent.png) !important; width: auto !important; height: 44px !important; max-width: 150px; object-fit: contain; background: transparent !important; }
 /* Custom footer + mobile drawer links */
 .store-footer .k360-foot { background: #14101f; color: #e9e5f5; direction: rtl; }
 .k360-foot__in { max-width: 1180px; margin: 0 auto; padding: 32px 16px 20px; display: grid; gap: 24px; grid-template-columns: 1fr; }
@@ -764,7 +764,7 @@ body.k360-has-bar:has(.k360-hero) .store-header { top: 38px !important; }
 .k360-foot__pay .k360-bn { height: 28px; }
 .k360-foot__pay .k360-bn.mispay { height: 30px; }
 /* Header logo on inner pages: full logo on a black rounded plate */
-.store-header img[src*="221debdd"] { content: url(https://raw.githubusercontent.com/eyadshouk13-lab/kafarat360-images/267998d15e2719cea4b5c6c78a75a2b5f9df1792/brand/logo-wide-transparent.png) !important; width: auto !important; height: 46px !important; max-width: 150px; object-fit: contain; background: #0b0b0f; border-radius: 10px; padding: 2px 8px; box-sizing: content-box; }
+.store-header img[src*="221debdd"] { content: url(https://cdn.jsdelivr.net/gh/eyadshouk13-lab/kafarat360-images@267998d15e2719cea4b5c6c78a75a2b5f9df1792/brand/logo-wide-transparent.png) !important; width: auto !important; height: 46px !important; max-width: 150px; object-fit: contain; background: #0b0b0f; border-radius: 10px; padding: 2px 8px; box-sizing: content-box; }
 /* ================= Offer slider (k360-ofr): bold full-width slides ================= */
 .k360-ofr { margin: 14px 0 6px; direction: ltr; }
 .k360-ofr__view { overflow: hidden; max-width: 1240px; margin: 0 auto; border-radius: 0; touch-action: pan-y; }
@@ -1031,11 +1031,12 @@ body:has(.k360-hero) .store-header img[src*="221debdd"]{filter:none}
 [data-k360="brands"]:has(>.k360-hint){min-height:240px}
 [data-k360="collections"]:has(>.k360-hint){min-height:700px}
 [data-k360="shop"]:has(>.k360-hint){min-height:2200px}
-[data-k360="map"]:has(>.k360-hint){min-height:440px}
+[data-k360="map"]:has(>.k360-hint){min-height:816px}
+[data-k360="deals"]:has(>.k360-hint){min-height:2000px}
 @media(min-width:768px){[data-k360="finder"]:has(>.k360-hint){min-height:560px}[data-k360="collections"]:has(>.k360-hint){min-height:520px}[data-k360="shop"]:has(>.k360-hint){min-height:1500px}[data-k360="brands"]:has(>.k360-hint){min-height:200px}}
-.store-footer:not(:has(.k360-foot)){min-height:620px}
+.store-footer:not(:has(.k360-foot)){min-height:1060px}
 .store-footer:not(:has(.k360-foot))>*{visibility:hidden}
-@media(min-width:768px){.store-footer:not(:has(.k360-foot)){min-height:980px}}
+@media(min-width:768px){.store-footer:not(:has(.k360-foot)){min-height:980px}[data-k360="map"]:has(>.k360-hint){min-height:520px}[data-k360="deals"]:has(>.k360-hint){min-height:1000px}}
 .k360-site .card-img img{aspect-ratio:1/1;object-fit:contain;width:100%;height:auto}
 .k360-site .col-p img{aspect-ratio:1/1;object-fit:contain}
 
@@ -1095,3 +1096,8 @@ body:has(.k360-hero) .store-header img[src*="221debdd"]{filter:none}
 .deal-sticker em{font-style:normal;font-weight:800;font-size:11px;color:#FFD400}
 .deal-sticker i{font-style:normal;font-weight:800;font-size:11px;color:#fff;background:#FFD400;color:#3A1A75;border-radius:4px;padding:0 8px;margin-top:1px}
 .deal-sticker.d31{background:linear-gradient(160deg,#8B4DF0,#4B2296)!important}
+
+/* Footer: logo in the middle */
+.k360-foot__brand{grid-column:1/-1;text-align:center;display:grid;justify-items:center;gap:10px}
+.k360-foot__brand img{height:92px;width:auto;max-width:260px;object-fit:contain}
+.k360-foot__brand p{max-width:520px;margin:0}

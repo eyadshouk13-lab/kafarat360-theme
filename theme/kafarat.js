@@ -260,7 +260,7 @@
   }
 
   /* ---------- brand strip (website markup) ---------- */
-  var LOGO = "https://raw.githubusercontent.com/eyadshouk13-lab/kafarat360-theme/e7c1e33f20ca7352199d185905fec633191ef94b/";
+  var LOGO = "https://cdn.jsdelivr.net/gh/eyadshouk13-lab/kafarat360-theme@e7c1e33f20ca7352199d185905fec633191ef94b/";
   function brandUrl(b) { return base().replace(/\/?$/, "/") + "b/brand-" + b.i; }
   function initBrands(el) {
     load("brands.json").then(function (bs) {
@@ -314,7 +314,7 @@
       '<div class="k360-foot__cta"><div><b>محتار في مقاس إطار سيارتك؟</b><span>فريقنا يساعدك تختار المناسب قبل الطلب.</span></div>' +
       '<div class="k360-foot__ctab"><a class="k360-fbtn k360-fbtn--call" href="tel:' + PHONE + '">اتصل بنا</a><a class="k360-fbtn k360-fbtn--wa" href="https://wa.me/' + PHONE.replace(/\D/g, "") + '" target="_blank" rel="noopener">واتساب</a></div></div>' +
       '<div class="k360-foot__in">' +
-      '<div class="k360-foot__brand"><b>كفرات 360</b><p>إطارات أصلية بتواريخ جديدة من أشهر الماركات العالمية، توصيل وتركيب عند باب بيتك في كل مدن المملكة.</p></div>' +
+      '<div class="k360-foot__brand"><img src="https://cdn.jsdelivr.net/gh/eyadshouk13-lab/kafarat360-images@267998d15e2719cea4b5c6c78a75a2b5f9df1792/brand/logo-wide-transparent.png" alt="كفرات 360" width="220" height="92"><p>إطارات أصلية بتواريخ جديدة من أشهر الماركات العالمية، توصيل وتركيب عند باب بيتك في كل مدن المملكة.</p></div>' +
       grp("about", "شركتنا", L.about) + grp("cats", "الإطارات", L.cats) + grp("areas", "مجالات الخدمة", L.areas) +
       '<details class="k360-foot__grp" data-g="brands"><summary>الماركات لدينا</summary><ul data-foot-brands><li><a href="' + pageUrl("brands") + '">كل الماركات</a></li></ul></details>' +
       grp("help", "المساعدة والمشورة", L.help) +
@@ -340,6 +340,16 @@
   function initHeroVideo() {
     var f = document.querySelector(".k360-hero__over iframe");
     if (!f || f.getAttribute("data-k360-yt")) return;
+    /* the YouTube player loads after the page is ready, so it never competes with the first paint */
+    if (!f.getAttribute("src")) {
+      var ds = f.getAttribute("data-src"); if (!ds) return;
+      if (!f.getAttribute("data-k360-wait")) {
+        f.setAttribute("data-k360-wait", "1");
+        var go = function () { setTimeout(function () { f.setAttribute("src", ds); initHeroVideo(); }, 500); };
+        if (document.readyState === "complete") go(); else window.addEventListener("load", go, { once: true });
+      }
+      return;
+    }
     f.setAttribute("data-k360-yt", "1");
     var box = f.parentElement; box.classList.add("is-wait");
     if (!/enablejsapi=1/.test(f.src)) f.src = f.src + "&enablejsapi=1&origin=" + encodeURIComponent(location.origin);
