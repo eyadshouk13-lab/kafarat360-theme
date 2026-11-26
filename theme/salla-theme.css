@@ -1081,3 +1081,10 @@ body:has(.k360-hero) .store-header img[src*="221debdd"]{filter:none}
 .dl-tab small{font-size:11px;font-weight:600;color:var(--k-muted)}
 .dl-tab.is-on{border-color:var(--k-brand);background:var(--k-soft);color:var(--k-brand-d)}
 @media(max-width:700px){.dl-head{justify-content:center}.dl-box{min-width:46px}}
+
+/* Countdown: small and red; brand logo only on the product page picture */
+.dl-clock{display:inline-flex;align-items:center;gap:6px;color:#d62828;font-weight:700;font-size:14px;background:#fff1f1;border:1px solid #f6c9c9;border-radius:999px;padding:5px 14px;direction:rtl}
+.dl-clock b{font-variant-numeric:tabular-nums;font-weight:800;font-size:15px}
+.card-logo{display:none!important}
+.pd-logo{position:absolute;top:12px;left:12px;z-index:6;pointer-events:none}
+.pd-logo img{height:34px;width:auto;max-width:110px;object-fit:contain;background:none;mix-blend-mode:multiply}

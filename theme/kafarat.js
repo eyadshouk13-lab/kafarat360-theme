@@ -560,7 +560,21 @@
   /* sticker (3+1 / 2+2) and the brand logo on the tire picture */
   function cardOverlay(p, logo) {
     var t = dealOf(p);
-    return (t ? '<span class="deal-sticker d' + t + '">' + (t === "31" ? "3+1" : "2+2") + "</span>" : "") + (logo ? '<span class="card-logo"><img src="' + LOGO + esc(logo) + '" alt="' + esc(p.b) + '" width="44" height="28"></span>' : "");
+    return t ? '<span class="deal-sticker d' + t + '">' + (t === "31" ? "3+1" : "2+2") + "</span>" : "";
+  }
+  /* brand logo on the product page picture (no background box) */
+  function initPageLogo() {
+    var cfg = window.salla && salla.config;
+    if (!cfg || cfg.get("page.slug") !== "product.single") return;
+    var slider = document.querySelector("salla-slider.details-slider"); if (!slider || slider.querySelector(".pd-logo")) return;
+    var id = cfg.get("page.id"); if (!id) return;
+    cardInfo(function (D) {
+      var p = D.m[id], logo = p && D.logos[p.bi]; if (!logo || slider.querySelector(".pd-logo")) return;
+      var box = slider.querySelector(".swiper") || slider, a = document.createElement("div");
+      a.className = "pd-logo"; a.innerHTML = '<img src="' + LOGO + esc(logo) + '" alt="' + esc(p.b) + '">';
+      if (getComputedStyle(box).position === "static") box.style.position = "relative";
+      box.appendChild(a);
+    });
   }
 
   var PAGES = { offers: "عروض الجمعة البيضاء", shop: "جميع المنتجات", best: "الأكثر مبيعاً", cats: "جميع التصنيفات", brands: "العلامات التجارية",
@@ -1003,7 +1017,8 @@
       function tick() {
         var L = leftText();
         if (!L) { tm.innerHTML = "<b>انتهى العرض</b>"; return; }
-        tm.innerHTML = '<span class="dl-lbl">ينتهي العرض بعد</span><span class="dl-box"><b>' + L.d + "</b><small>يوم</small></span><span class=\"dl-box\"><b>" + L.h + "</b><small>ساعة</small></span><span class=\"dl-box\"><b>" + L.m + "</b><small>دقيقة</small></span><span class=\"dl-box\"><b>" + L.s + "</b><small>ثانية</small></span>";
+        var z = function (n) { return (n < 10 ? "0" : "") + n; };
+        tm.innerHTML = '<span class="dl-clock">&#x23F1; ينتهي بعد <b>' + L.d + "</b> يوم <b>" + z(L.h) + ":" + z(L.m) + ":" + z(L.s) + "</b></span>";
       }
       el.addEventListener("click", function (e) { var b = e.target.closest(".dl-tab"); if (!b) return; tab = b.getAttribute("data-t"); show(); });
       show(); tick(); setInterval(tick, 1000);
@@ -1125,6 +1140,7 @@
     for (var i = 0; i < cards.length; i++) { addRibbon(cards[i]); enhanceCard(cards[i]); }
     initPackages();
     initPageRibbon();
+    initPageLogo();
     initNav();
     initFooter();
     initDrawer();
