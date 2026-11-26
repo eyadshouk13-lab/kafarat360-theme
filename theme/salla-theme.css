@@ -830,7 +830,7 @@ body.k360-has-bar:has(.k360-hero) .store-header { top: 38px !important; }
   .k360-hero__over { right: auto; width: 58%; left: 0; }
   .k360-hero__shade { background: linear-gradient(270deg, rgba(18,8,31,.9) 0%, rgba(18,8,31,.55) 42%, rgba(0,0,0,0) 62%); }
 }
-@media (min-width: 768px) { /* ===== About page (من نحن) ===== */
+/* ===== About page (من نحن) ===== */
 .k360-doc:has(.k360-about){max-width:none;padding:0;background:none;border:0;box-shadow:none}
 .k360-about{max-width:980px;margin:0 auto;display:grid;gap:34px}
 .k360-about h3{font-size:22px;font-weight:800;margin:0 0 12px;color:var(--k-ink)}
