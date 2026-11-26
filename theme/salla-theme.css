@@ -1101,3 +1101,9 @@ body:has(.k360-hero) .store-header img[src*="221debdd"]{filter:none}
 .k360-foot__brand{grid-column:1/-1;text-align:center;display:grid;justify-items:center;gap:10px}
 .k360-foot__brand img{height:92px;width:auto;max-width:260px;object-fit:contain}
 .k360-foot__brand p{max-width:520px;margin:0}
+
+/* Footer social icons */
+.k360-foot__social{display:flex;gap:12px;justify-content:center;margin-top:4px}
+.k360-foot__social .soc{display:grid;place-items:center;width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.1);color:#fff;transition:.2s}
+.k360-foot__social .soc:hover{background:#7B3FE4;transform:translateY(-2px)}
+.k360-foot__social .soc[aria-disabled="true"]{cursor:default}
