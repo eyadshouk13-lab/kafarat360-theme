@@ -560,7 +560,7 @@
   /* sticker (3+1 / 2+2) and the brand logo on the tire picture */
   function cardOverlay(p, logo) {
     var t = dealOf(p);
-    return t ? '<span class="deal-sticker d' + t + '">' + (t === "31" ? "3+1" : "2+2") + "</span>" : "";
+    return t ? '<span class="deal-sticker d' + t + '"><b>اشترِ ' + (t === "31" ? "3" : "2") + "</b><em>واحصل على " + (t === "31" ? "1" : "2") + "</em><i>مجاناً</i></span>" : "";
   }
   /* brand logo on the product page picture (no background box) */
   function initPageLogo() {
