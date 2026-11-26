@@ -11,7 +11,7 @@
 (function () {
   "use strict";
 
-  var DATA = "https://cdn.jsdelivr.net/gh/eyadshouk13-lab/kafarat360-theme@b76dc2d34d43860c03a00519e63ddbd596886288/data/";
+  var DATA = "https://cdn.jsdelivr.net/gh/eyadshouk13-lab/kafarat360-theme@536ec4fbaa54682b210184c3a1cd51dece11fe89/data/";
   var IMG = "https://cdn.jsdelivr.net/gh/eyadshouk13-lab/kafarat360-theme@b76dc2d34d43860c03a00519e63ddbd596886288/p/";
   var TYPES = { car: "سيارات ركاب", suv: "SUV ودفع رباعي", truck: "نقل خفيف" };
   var COLLECTIONS = [
@@ -276,7 +276,7 @@
     if (document.querySelector(".k360-nav")) return;
     var header = document.querySelector(".store-header"); if (!header) return;
     var home = base().replace(/\/?$/, "/");
-    var links = [[home, "الصفحة الرئيسية", ""], [pageUrl("offers"), "&#x1F525; العروض", "offers"], [pageUrl("shop"), "جميع المنتجات", "shop"], [pageUrl("best"), "الأكثر مبيعاً", "best"],
+    var links = [[home, "الصفحة الرئيسية", ""], [pageUrl("offers"), "&#x1F525; العروض", "offers"], [pageUrl("deals", { t: "31", title: "عروض 3+1" }), "3+1", "deals"], [pageUrl("deals", { t: "22", title: "عروض 2+2" }), "2+2", "deals"], [pageUrl("shop"), "جميع المنتجات", "shop"], [pageUrl("best"), "الأكثر مبيعاً", "best"],
       [home + "b/brand-167120911", "بريجستون", ""], [home + "#k360-garage", "&#x1F3E0; ماي جراش", ""], [pageUrl("cats"), "جميع التصنيفات", "cats"],
       [pageUrl("brands"), "العلامات التجارية", "brands"], [home + "#k360-finder", "ابحث بالمقاس", ""]];
     var cur = new URLSearchParams(location.search).get("k360") || "";
@@ -295,7 +295,7 @@
     var home = base().replace(/\/?$/, "/");
     var l = function (n, t) { return [pageUrl(n), t]; };
     return {
-      shop: [[home, "الصفحة الرئيسية"], l("offers", "العروض"), l("shop", "جميع المنتجات"), l("best", "الأكثر مبيعاً"), l("cats", "جميع التصنيفات"), l("brands", "العلامات التجارية"), [home + "#k360-finder", "ابحث بالمقاس"], [home + "#k360-garage", "ماي جراش"]],
+      shop: [[home, "الصفحة الرئيسية"], l("offers", "العروض"), [pageUrl("deals", { t: "31", title: "عروض 3+1" }), "عروض 3+1"], [pageUrl("deals", { t: "22", title: "عروض 2+2" }), "عروض 2+2"], l("shop", "جميع المنتجات"), l("best", "الأكثر مبيعاً"), l("cats", "جميع التصنيفات"), l("brands", "العلامات التجارية"), [home + "#k360-finder", "ابحث بالمقاس"], [home + "#k360-garage", "ماي جراش"]],
       about: [l("why", "من نحن")],
       areas: CITIES.map(function (c) { return [cityUrl(c), "الإطارات في " + c[1]]; }),
       cats: [[pageUrl("shop", { t: "car", title: TYPES.car }), "إطارات " + TYPES.car], [pageUrl("shop", { t: "suv", title: TYPES.suv }), "إطارات " + TYPES.suv], [pageUrl("shop", { t: "truck", title: TYPES.truck }), "إطارات " + TYPES.truck], [pageUrl("offers"), "عروض الإطارات"]],
@@ -470,12 +470,12 @@
     if (!id || !form || !qty) return;
     Promise.all([load("products.json"), load("brands.json")]).then(function (res) {
       var p = res[0].filter(function (x) { return x.i === id; })[0]; if (!p || document.querySelector(".k360-pd")) return;
-      var u = price(p), off = p.s && p.s < p.pr, box = document.createElement("div");
+      var u = price(p), t = dealOf(p), off = p.s && p.s < p.pr, box = document.createElement("div");
       box.className = "k360-site k360-pd";
       function pk(n, title, sub, hot) {
         return '<label class="pd-pkg' + (hot ? " hot" : "") + '"><input type="radio" name="k360pkg" value="' + n + '">' + (hot ? "<i>الأكثر مبيعاً</i>" : "") +
-          '<span class="pkg-ic">' + (n === 2 ? "&#x1F6DE;&#x1F6DE;" : "&#x1F6DE;&#x1F6DE;&#x1F6DE;&#x1F6DE;") + "</span><span><b>" + title + "</b><small>" + (n === 4 && offerOn() ? "اشترِ 3 والرابع مجاناً" : sub) + "</small></span><em>" + money(tiresCost(u, n)) +
-          (off || (n === 4 && offerOn()) ? '<s style="display:block;font-size:12px;color:var(--muted);font-weight:400">' + money(p.pr * n) + "</s>" : "") + "</em></label>";
+          '<span class="pkg-ic">' + (n === 2 ? "&#x1F6DE;&#x1F6DE;" : "&#x1F6DE;&#x1F6DE;&#x1F6DE;&#x1F6DE;") + "</span><span><b>" + title + "</b><small>" + (n === 4 && t ? dealLabel(t) : sub) + "</small></span><em>" + money(tiresCost(u, n, t)) +
+          (off || (n === 4 && t) ? '<s style="display:block;font-size:12px;color:var(--muted);font-weight:400">' + money(p.pr * n) + "</s>" : "") + "</em></label>";
       }
       box.innerHTML =
         '<div class="pd-top"><span class="tag">' + esc(TYPES[p.t] || "") + '</span><span class="tag green">&#x1F6E1;&#xFE0F; الضمان: ' + (p.g ? p.g + " سنوات" : "الوكيل") + "</span>" + (p.f ? '<span class="tag">Run Flat</span>' : "") + "</div>" +
@@ -486,7 +486,7 @@
       var radios = [].slice.call(box.querySelectorAll('input[name="k360pkg"]')), tot = box.querySelector("[data-total]");
       function paint() {
         var n = Math.max(1, +qty.value || 1);
-        tot.textContent = money(tiresCost(u, n));
+        tot.textContent = money(tiresCost(u, n, t));
         radios.forEach(function (r) { r.checked = +r.value === n; });
       }
       function setQty(n) {
@@ -547,14 +547,24 @@
   var PAYLOGO = "https://cdn.jsdelivr.net/gh/eyadshouk13-lab/kafarat360-theme@b76dc2d34d43860c03a00519e63ddbd596886288/pay/";
   var BNPL_IMGS = '<img class="k360-bn tabby" src="' + PAYLOGO + 'tabby.svg" alt="Tabby" loading="lazy"><img class="k360-bn tamara" src="' + PAYLOGO + 'tamara.svg" alt="Tamara" loading="lazy"><img class="k360-bn mispay" src="' + PAYLOGO + 'mispay.png" alt="MISpay" loading="lazy">';
   var BNPL = '<div class="k360-bnpl"><span>قسّطها مع</span>' + BNPL_IMGS + "</div>";
-  function tiresCost(u, n) { return offerOn() ? u * (n - Math.floor(n / 4)) : u * n; }
+  /* per-product offers copied from the competitor's lists: 3+1 (17 tires) and 2+2 (89 tires), data/offers.json */
+  var DEALS = { "31": {}, "22": {} }, OFFERS_END = new Date("2026-12-01T00:00:00+03:00");
+  var dealsReady = load("offers.json").then(function (o) { (o.p31 || []).forEach(function (i) { DEALS["31"][i] = 1; }); (o.p22 || []).forEach(function (i) { DEALS["22"][i] = 1; }); }).catch(function () {});
+  function dealOf(p) { return !offerOn() ? "" : DEALS["31"][p.i] ? "31" : DEALS["22"][p.i] ? "22" : ""; }
+  function dealLabel(t) { return t === "31" ? "اشترِ 3 والرابع مجاناً" : t === "22" ? "اشترِ 2 واحصل على 2 مجاناً" : "مجموعة كاملة"; }
+  function tiresCost(u, n, t) { var f = Math.floor(n / 4); return t === "31" ? u * (n - f) : t === "22" ? u * (n - 2 * f) : u * n; }
   function pk4(p, u, id) {
-    var on = offerOn(), off = p.s && p.s < p.pr, was = on ? p.pr * 4 : (off ? p.pr * 4 : 0);
-    return '<button type="button" class="pkg hot" data-add="' + id + '" data-q="4"><i>' + (on ? "اشترِ 3 والرابع مجاناً" : "مجموعة كاملة") + '</i><span class="pkg-t">باقة 4 كفرات</span><b>' + money(tiresCost(u, 4)) + "</b>" + (was ? "<s>" + money(was) + "</s>" : "") + "<small>&#x1F6D2; أضف</small></button>";
+    var t = dealOf(p), off = p.s && p.s < p.pr, was = (t || off) ? p.pr * 4 : 0;
+    return '<button type="button" class="pkg hot" data-add="' + id + '" data-q="4"><i>' + dealLabel(t) + '</i><span class="pkg-t">باقة 4 كفرات</span><b>' + money(tiresCost(u, 4, t)) + "</b>" + (was ? "<s>" + money(was) + "</s>" : "") + "<small>&#x1F6D2; أضف</small></button>";
+  }
+  /* sticker (3+1 / 2+2) and the brand logo on the tire picture */
+  function cardOverlay(p, logo) {
+    var t = dealOf(p);
+    return (t ? '<span class="deal-sticker d' + t + '">' + (t === "31" ? "3+1" : "2+2") + "</span>" : "") + (logo ? '<span class="card-logo"><img src="' + LOGO + esc(logo) + '" alt="' + esc(p.b) + '" width="44" height="28"></span>' : "");
   }
 
   var PAGES = { offers: "عروض الجمعة البيضاء", shop: "جميع المنتجات", best: "الأكثر مبيعاً", cats: "جميع التصنيفات", brands: "العلامات التجارية",
-    book: "حجز موعد التركيب", areas: "مجالات الخدمة", city: "الإطارات في مدينتك", why: "من نحن", delivery: "التسليم والتركيب", warranty: "ضمان الإطارات", returns: "الإرجاع واسترداد المبلغ",
+    deals: "عروض الكفرات", book: "حجز موعد التركيب", areas: "مجالات الخدمة", city: "الإطارات في مدينتك", why: "من نحن", delivery: "التسليم والتركيب", warranty: "ضمان الإطارات", returns: "الإرجاع واسترداد المبلغ",
     privacy: "سياسة الخصوصية", terms: "الشروط والأحكام", support: "خدمة العملاء", sizes: "كيف تقرأ مقاس الإطار" };
   var PHONE = "+966555023836";
   var INFO = {
@@ -631,7 +641,7 @@
     return '<article class="card">' +
       (off ? '<span class="badge-off">خصم ' + off + "%</span>" : (p.f ? '<span class="badge-tag">Run Flat</span>' : "")) +
       '<a href="' + url + '" class="card-img"><div class="card-rib' + (off ? "" : " alt") + '"><div class="rib-track"><div>' + seg + '</div><div aria-hidden="true">' + seg + "</div></div></div>" +
-      '<img loading="lazy" width="300" height="300" src="' + IMG + esc(p.im) + '" alt="' + esc(p.b + " " + p.m) + '"></a>' +
+      '<img loading="lazy" width="300" height="300" src="' + IMG + esc(p.im) + '" alt="' + esc(p.b + " " + p.m) + '">' + cardOverlay(p, logo) + "</a>" +
       '<div class="card-body">' +
       '<div class="card-brand">' + (logo ? '<img src="' + LOGO + esc(logo) + '" alt="">' : "") + "<span>" + esc(p.b) + "</span></div>" +
       '<a href="' + url + '" class="card-title">' + sizeOf(p) + " " + esc(p.b) + " " + esc(p.m) + "</a>" +
@@ -728,7 +738,7 @@
   function initOfferBar() {
     if (!offerOn() || document.querySelector(".k360-bar")) return;
     var header = document.querySelector(".store-header"); if (!header) return;
-    var msgs = ["الجمعة البيضاء &#x2726; اشترِ 3 كفرات واحصل على الرابع مجاناً", "عروض الجمعة البيضاء على إطارات الماركات العالمية", "توصيل وتركيب عند باب بيتك في كل مدن المملكة", "ضمان الوكيل على الإطارات"];
+    var msgs = ["الجمعة البيضاء &#x2726; عروض 3+1 و2+2 على كفرات مختارة", "عروض الجمعة البيضاء على إطارات الماركات العالمية", "توصيل وتركيب عند باب بيتك في كل مدن المملكة", "ضمان الوكيل على الإطارات"];
     var seg = msgs.map(function (m) { return "<span>" + m + "</span>"; }).join("<i>&#x2726;</i>") + "<i>&#x2726;</i>";
     var bar = document.createElement("a");
     bar.className = "k360-bar"; bar.href = pageUrl("offers");
@@ -746,15 +756,16 @@
       var disc = all.filter(function (p) { return p.s && p.s < p.pr; }).sort(function (a, b) { return (b.pr - b.s) / b.pr - (a.pr - a.s) / a.pr; });
       var max = disc.length ? Math.round((1 - disc[0].s / disc[0].pr) * 100) : 0;
       var offers = [];
-      if (on) offers.push({ id: "bf", big: "3 + 1", t: "اشترِ 3 واحصل على 1 مجاناً", d: "اطلب طقم 4 كفرات وادفع ثمن 3 فقط." });
+      var l31 = all.filter(function (p) { return DEALS["31"][p.i]; }), l22 = all.filter(function (p) { return DEALS["22"][p.i]; });
+      if (on) offers.push({ id: "d31", big: "3 + 1", t: "اشترِ 3 واحصل على 1 مجاناً", d: "على " + l31.length + " إطار مختار: ادفع ثمن 3 فقط." }, { id: "d22", big: "2 + 2", t: "اشترِ 2 واحصل على 2 مجاناً", d: "على " + l22.length + " إطار مختار: ادفع ثمن 2 فقط." });
       if (disc.length) offers.push({ id: "disc", big: "حتى " + max + "%", t: "خصومات على " + disc.length.toLocaleString("ar-SA") + " إطار", d: "أسعار مخفضة على إطارات مختارة من الماركات العالمية." });
-      var st = { tab: on ? "bf" : "disc", shown: 24 };
+      var st = { tab: on ? "d31" : "disc", shown: 24 };
       function render() {
-        var list = st.tab === "disc" ? disc : all;
+        var list = st.tab === "disc" ? disc : st.tab === "d22" ? l22 : l31;
         body.innerHTML = '<div class="k360-offers">' + offers.map(function (o) {
           return '<button type="button" class="k360-offer' + (st.tab === o.id ? " is-on" : "") + '" data-o="' + o.id + '"><b>' + o.big + "</b><span><strong>" + o.t + "</strong><small>" + o.d + "</small></span></button>";
         }).join("") + "</div>" +
-          '<p class="k360-shop__count">' + list.length.toLocaleString("ar-SA") + " إطار" + (st.tab === "bf" ? " ضمن عرض 3 + 1" : " بخصم") + "</p>" +
+          '<p class="k360-shop__count">' + list.length.toLocaleString("ar-SA") + " إطار" + (st.tab === "d31" ? " ضمن عرض 3 + 1" : st.tab === "d22" ? " ضمن عرض 2 + 2" : " بخصم") + "</p>" +
           '<div class="grid">' + list.slice(0, st.shown).map(function (p) { return siteCard(p, D.logos); }).join("") + "</div>" +
           (list.length > st.shown ? '<button type="button" class="btn btn-primary k360-more" data-more>عرض المزيد</button>' : "");
       }
@@ -789,6 +800,7 @@
       CITIES.map(function (c) { return BR[c[0]] ? "<section><h3>مراكز الخدمة والتركيب في " + c[1] + "</h3>" + brCards(BR[c[0]]) + "</section>" : ""; }).join("") + "</div>";
     if (name === "city") renderCityPage(body, q.get("c"));
     if (name === "book") renderBookPage(body, q);
+    if (name === "deals") renderDealsPage(body, q);
     if (name === "best") body.innerHTML = '<salla-products-list source="sales" source-value="[]"></salla-products-list>';
     if (INFO[name]) body.innerHTML = '<article class="k360-doc">' + INFO[name].replace(/href="@(\w+)"/g, function (m, n) { return 'href="' + (n === "finder" ? base().replace(/\/?$/, "/") + "#k360-finder" : pageUrl(n)) + '"'; }) + "</article>";
     if (name === "why") load("brands.json").then(function (bs) {
@@ -961,7 +973,59 @@
         '<button type="button" class="pkg" data-add="' + id + '" data-q="2"><span class="pkg-t">باقة كفرين</span><b>' + money(u * 2) + "</b>" + (off ? "<s>" + money(p.pr * 2) + "</s>" : "") + "<small>&#x1F6D2; أضف</small></button>" +
         pk4(p, u, id) + "</div>" + BNPL;
       content.appendChild(box);
+      var pic = cardEl.querySelector(".s-product-card-image");
+      if (pic && !pic.querySelector(".card-logo,.deal-sticker")) { var ov = document.createElement("div"); ov.className = "k360-ov"; ov.innerHTML = cardOverlay(p, logo); pic.appendChild(ov); }
       cardEl.classList.add("k360-has-pk");
+    });
+  }
+
+  /* ---------- deals: home section "عروض 360" with countdown + the 3+1 / 2+2 pages ---------- */
+  function dealList(D, t) { return Object.keys(DEALS[t]).map(function (k) { return D.m[k]; }).filter(Boolean); }
+  function leftText() {
+    var ms = OFFERS_END - Date.now(); if (ms <= 0) return null;
+    var d = Math.floor(ms / 864e5), h = Math.floor(ms % 864e5 / 36e5), m = Math.floor(ms % 36e5 / 6e4), s = Math.floor(ms % 6e4 / 1e3);
+    return { d: d, h: h, m: m, s: s };
+  }
+  function initDeals(el) {
+    var sec = el.closest("section") || el;
+    cardInfo(function (D) {
+      var tab = "31", l31 = dealList(D, "31"), l22 = dealList(D, "22");
+      if (!offerOn() || (!l31.length && !l22.length)) { sec.style.display = "none"; return; }
+      el.innerHTML = '<div class="dl-head"><div class="dl-time" data-time></div><div class="dl-tabs"><button type="button" class="dl-tab is-on" data-t="31">3+1<small>اشترِ 3 والرابع مجاناً</small></button><button type="button" class="dl-tab" data-t="22">2+2<small>اشترِ 2 واحصل على 2</small></button></div></div>' +
+        '<div class="top-grid" data-grid></div><div class="top-more"><a class="k360-btn k360-btn--ghost" data-all href="#">عرض كل العروض</a></div>';
+      var grid = el.querySelector("[data-grid]"), tm = el.querySelector("[data-time]"), all = el.querySelector("[data-all]");
+      function show() {
+        var l = tab === "31" ? l31 : l22;
+        grid.innerHTML = l.slice(0, 10).map(function (p) { return siteCard(p, D.logos); }).join("");
+        all.href = pageUrl("deals", { t: tab, title: tab === "31" ? "عروض 3+1" : "عروض 2+2" });
+        [].forEach.call(el.querySelectorAll(".dl-tab"), function (b) { b.classList.toggle("is-on", b.getAttribute("data-t") === tab); });
+      }
+      function tick() {
+        var L = leftText();
+        if (!L) { tm.innerHTML = "<b>انتهى العرض</b>"; return; }
+        tm.innerHTML = '<span class="dl-lbl">ينتهي العرض بعد</span><span class="dl-box"><b>' + L.d + "</b><small>يوم</small></span><span class=\"dl-box\"><b>" + L.h + "</b><small>ساعة</small></span><span class=\"dl-box\"><b>" + L.m + "</b><small>دقيقة</small></span><span class=\"dl-box\"><b>" + L.s + "</b><small>ثانية</small></span>";
+      }
+      el.addEventListener("click", function (e) { var b = e.target.closest(".dl-tab"); if (!b) return; tab = b.getAttribute("data-t"); show(); });
+      show(); tick(); setInterval(tick, 1000);
+    });
+  }
+  function renderDealsPage(body, q) {
+    var tab = q.get("t") === "22" ? "22" : "31", shown = 24;
+    body.innerHTML = '<p class="k360-hint">جارٍ تحميل العروض…</p>';
+    cardInfo(function (D) {
+      var lists = { "31": dealList(D, "31"), "22": dealList(D, "22") };
+      function render() {
+        var l = lists[tab];
+        body.innerHTML = '<div class="k360-offers"><button type="button" class="k360-offer' + (tab === "31" ? " is-on" : "") + '" data-t="31"><b>3 + 1</b><span><strong>اشترِ 3 واحصل على 1 مجاناً</strong><small>' + lists["31"].length + ' إطار مختار</small></span></button>' +
+          '<button type="button" class="k360-offer' + (tab === "22" ? " is-on" : "") + '" data-t="22"><b>2 + 2</b><span><strong>اشترِ 2 واحصل على 2 مجاناً</strong><small>' + lists["22"].length + " إطار مختار</small></span></button></div>" +
+          '<div class="grid">' + l.slice(0, shown).map(function (p) { return siteCard(p, D.logos); }).join("") + "</div>" +
+          (l.length > shown ? '<button type="button" class="btn btn-primary k360-more" data-more>عرض المزيد</button>' : "");
+      }
+      body.onclick = function (e) {
+        var b = e.target.closest("[data-t]"); if (b) { tab = b.getAttribute("data-t"); shown = 24; render(); }
+        if (e.target.closest("[data-more]")) { shown += 24; render(); }
+      };
+      render();
     });
   }
 
@@ -1049,7 +1113,7 @@
   }
 
   /* ---------- start ---------- */
-  var INIT = { slider: initSlider, finder: initFinder, collections: initCollections, tabs: initTabs, garage: initGarage, shop: initShop, brands: initBrands, top: initTop, map: initMap };
+  var INIT = { slider: initSlider, finder: initFinder, collections: initCollections, tabs: initTabs, garage: initGarage, shop: initShop, brands: initBrands, top: initTop, map: initMap, deals: initDeals };
   function scan() {
     initPage();
     initBrandPage();
@@ -1083,7 +1147,7 @@
       [].forEach.call(b.parentNode.children, function (x) { x.classList.toggle("sel", x === b); });
     };
     document.addEventListener("pointerover", selPkg); document.addEventListener("pointerdown", selPkg); document.addEventListener("focusin", selPkg);
-    load("brands.json").then(function (bs) { bs.forEach(function (x) { if (x.logo) LOGOS[x.i] = x.logo; }); }).catch(function () {}).then(scan);
+    load("brands.json").then(function (bs) { bs.forEach(function (x) { if (x.logo) LOGOS[x.i] = x.logo; }); }).catch(function () {}).then(function () { return dealsReady; }).then(scan);
 
     new MutationObserver(queue).observe(document.body, { childList: true, subtree: true });
     if (location.hash === "#k360-shop") setTimeout(function () { var s = document.getElementById("k360-shop"); if (s) s.scrollIntoView(); }, 600);

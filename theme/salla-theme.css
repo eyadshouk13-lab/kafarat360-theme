@@ -1060,3 +1060,24 @@ body:has(.k360-hero) .store-header img[src*="221debdd"]{filter:none}
 .bk-go{display:block;text-align:center;margin-top:14px;width:100%}
 .bk-go[aria-disabled="true"]{opacity:.5;pointer-events:auto;cursor:not-allowed}
 .bk-note{font-size:12px;color:var(--k-muted);margin:10px 0 0!important;text-align:center}
+
+/* ===== Card overlays: deal sticker + brand logo on the tire picture ===== */
+.k360-site .card-img,.s-product-card-image{position:relative}
+.deal-sticker{position:absolute;top:10px;right:10px;z-index:4;background:linear-gradient(135deg,#7B3FE4,#4B2296);color:#fff;font-weight:800;font-size:13px;padding:5px 11px;border-radius:999px;box-shadow:0 4px 10px rgba(75,34,150,.35);line-height:1;pointer-events:none}
+.deal-sticker.d22{background:linear-gradient(135deg,#e53935,#b71c1c);box-shadow:0 4px 10px rgba(183,28,28,.35)}
+.card-logo{position:absolute;top:10px;left:10px;z-index:4;background:#fff;border-radius:10px;padding:3px 7px;box-shadow:0 2px 8px rgba(0,0,0,.14);display:grid;place-items:center;height:30px;min-width:48px;pointer-events:none}
+.card-logo img{max-height:22px;width:auto;max-width:56px;object-fit:contain}
+.k360-ov{position:absolute;inset:0;pointer-events:none;z-index:4}
+
+/* ===== Home: offers 360 section with countdown ===== */
+.dl-head{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:16px}
+.dl-time{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.dl-lbl{font-weight:800;color:var(--k-ink);margin-inline-end:4px}
+.dl-box{display:grid;place-items:center;min-width:54px;padding:6px 8px;border-radius:12px;background:#111118;color:#fff}
+.dl-box b{font-size:20px;line-height:1.1;font-variant-numeric:tabular-nums}
+.dl-box small{font-size:11px;color:#c9c0e8}
+.dl-tabs{display:flex;gap:8px}
+.dl-tab{border:2px solid var(--k-line);background:#fff;border-radius:14px;padding:8px 18px;font:inherit;font-weight:800;font-size:18px;cursor:pointer;color:var(--k-ink);display:grid;justify-items:center;gap:0}
+.dl-tab small{font-size:11px;font-weight:600;color:var(--k-muted)}
+.dl-tab.is-on{border-color:var(--k-brand);background:var(--k-soft);color:var(--k-brand-d)}
+@media(max-width:700px){.dl-head{justify-content:center}.dl-box{min-width:46px}}
