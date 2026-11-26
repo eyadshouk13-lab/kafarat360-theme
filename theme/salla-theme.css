@@ -1094,5 +1094,4 @@ body:has(.k360-hero) .store-header img[src*="221debdd"]{filter:none}
 .deal-sticker b{font-weight:800;font-size:13px;color:#fff}
 .deal-sticker em{font-style:normal;font-weight:800;font-size:11px;color:#FFD400}
 .deal-sticker i{font-style:normal;font-weight:800;font-size:11px;color:#fff;background:#FFD400;color:#3A1A75;border-radius:4px;padding:0 8px;margin-top:1px}
-.deal-sticker.d31{background:linear-gradient(160deg,#0f9d58,#066b3a)!important;box-shadow:0 5px 12px rgba(6,107,58,.4)!important}
-.deal-sticker.d31 i{color:#066b3a}
+.deal-sticker.d31{background:linear-gradient(160deg,#8B4DF0,#4B2296)!important}
