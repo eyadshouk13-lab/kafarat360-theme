@@ -11,8 +11,8 @@
 (function () {
   "use strict";
 
-  var DATA = "https://cdn.jsdelivr.net/gh/eyadshouk13-lab/kafarat360-theme@e7c1e33f20ca7352199d185905fec633191ef94b/data/";
-  var IMG = "https://raw.githubusercontent.com/eyadshouk13-lab/kafarat360-images/d5004e9/";
+  var DATA = "https://cdn.jsdelivr.net/gh/eyadshouk13-lab/kafarat360-theme@b76dc2d34d43860c03a00519e63ddbd596886288/data/";
+  var IMG = "https://cdn.jsdelivr.net/gh/eyadshouk13-lab/kafarat360-theme@b76dc2d34d43860c03a00519e63ddbd596886288/p/";
   var TYPES = { car: "سيارات ركاب", suv: "SUV ودفع رباعي", truck: "نقل خفيف" };
   var COLLECTIONS = [
     { id: "sport", ar: "سبورت", desc: "ثبات على السرعات العالية واستجابة دقيقة", test: function (p) { return /PILOT SPORT|P ?ZERO|POTENZA|EAGLE F1|SPORTCONTACT|VENTUS S1|ADVAN|PS4|SPORT MAXX/i.test(p.n); } },
@@ -242,7 +242,7 @@
         el.querySelector("[data-desc]").textContent = x.c.desc + " — " + x.items.length.toLocaleString("ar-SA") + " إطار";
         el.querySelector("[data-shopcol]").setAttribute("data-col", x.c.id);
         el.querySelector("[data-strip]").innerHTML = x.items.slice(0, 10).map(function (p) {
-          return '<a class="col-p" href="' + productUrl(p) + '"><img src="' + IMG + esc(p.im) + '" alt="" loading="lazy"><small>' + esc(p.b) + "</small><b>" + sizeOf(p) + "</b><span>" + money(price(p)) + (p.s && p.s < p.pr ? " <s>" + money(p.pr) + "</s>" : "") + "</span></a>";
+          return '<a class="col-p" href="' + productUrl(p) + '"><img src="' + IMG + esc(p.im) + '" alt="' + esc(p.b + " " + sizeOf(p)) + '" width="120" height="120" loading="lazy"><small>' + esc(p.b) + "</small><b>" + sizeOf(p) + "</b><span>" + money(price(p)) + (p.s && p.s < p.pr ? " <s>" + money(p.pr) + "</s>" : "") + "</span></a>";
         }).join("");
       }
       items.forEach(function (it) { it.addEventListener("click", function () { showCol(+it.dataset.k); }); });
@@ -320,7 +320,7 @@
       grp("help", "المساعدة والمشورة", L.help) +
       '<details class="k360-foot__grp" data-g="contact"><summary>تواصل معنا</summary><ul><li><a href="tel:' + PHONE + '" dir="ltr">' + PHONE + '</a></li><li><a href="' + pageUrl("support") + '">خدمة العملاء</a></li></ul></details>' +
       "</div>" +
-      '<div class="k360-foot__pay"><span>ادفع بثقة عبر</span>' + pay.map(function (s) { return '<img src="' + s + '" alt="" loading="lazy">'; }).join("") +
+      '<div class="k360-foot__pay"><span>ادفع بثقة عبر</span>' + pay.map(function (s) { return '<img src="' + s + '" alt="طريقة دفع" width="48" height="26" loading="lazy">'; }).join("") +
       BNPL_IMGS + "</div>" +
       '<div class="k360-foot__bar"><span>السجل التجاري 7040763810</span><span>&copy; ' + new Date().getFullYear() + " كفرات 360. جميع الحقوق محفوظة.</span></div>";
     Array.prototype.forEach.call(f.children, function (c) { c.style.display = "none"; });
@@ -544,7 +544,7 @@
       return OFFERS_LIVE || sessionStorage.getItem("k360-offers") === "1";
     } catch (e) { return OFFERS_LIVE; }
   }
-  var PAYLOGO = "https://cdn.jsdelivr.net/gh/eyadshouk13-lab/kafarat360-theme@3c0415ceb5f9e34ac6ece8b5bd6d55cc5a8d85ee/pay/";
+  var PAYLOGO = "https://cdn.jsdelivr.net/gh/eyadshouk13-lab/kafarat360-theme@b76dc2d34d43860c03a00519e63ddbd596886288/pay/";
   var BNPL_IMGS = '<img class="k360-bn tabby" src="' + PAYLOGO + 'tabby.svg" alt="Tabby" loading="lazy"><img class="k360-bn tamara" src="' + PAYLOGO + 'tamara.svg" alt="Tamara" loading="lazy"><img class="k360-bn mispay" src="' + PAYLOGO + 'mispay.png" alt="MISpay" loading="lazy">';
   var BNPL = '<div class="k360-bnpl"><span>قسّطها مع</span>' + BNPL_IMGS + "</div>";
   function tiresCost(u, n) { return offerOn() ? u * (n - Math.floor(n / 4)) : u * n; }
@@ -631,7 +631,7 @@
     return '<article class="card">' +
       (off ? '<span class="badge-off">خصم ' + off + "%</span>" : (p.f ? '<span class="badge-tag">Run Flat</span>' : "")) +
       '<a href="' + url + '" class="card-img"><div class="card-rib' + (off ? "" : " alt") + '"><div class="rib-track"><div>' + seg + '</div><div aria-hidden="true">' + seg + "</div></div></div>" +
-      '<img loading="lazy" src="' + IMG + esc(p.im) + '" alt="' + esc(p.b + " " + p.m) + '"></a>' +
+      '<img loading="lazy" width="300" height="300" src="' + IMG + esc(p.im) + '" alt="' + esc(p.b + " " + p.m) + '"></a>' +
       '<div class="card-body">' +
       '<div class="card-brand">' + (logo ? '<img src="' + LOGO + esc(logo) + '" alt="">' : "") + "<span>" + esc(p.b) + "</span></div>" +
       '<a href="' + url + '" class="card-title">' + sizeOf(p) + " " + esc(p.b) + " " + esc(p.m) + "</a>" +

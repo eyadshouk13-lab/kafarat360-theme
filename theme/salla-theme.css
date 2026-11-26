@@ -1024,3 +1024,16 @@ body:has(.k360-hero) .store-header img[src*="221debdd"]{filter:none}
 .k360-hero__tag:before{content:"";width:8px;height:8px;border-radius:50%;background:#9461F0;box-shadow:0 0 0 4px rgba(148,97,240,.35)}
 .k360-hero__txt h1{font-weight:800;letter-spacing:-.01em;text-wrap:balance}
 .k360-hero__txt h1 em{font-style:normal;color:#C7A8FF}
+
+/* Reserve space for the sections that JS fills in, so the page does not jump while loading */
+[data-k360="slider"]{min-height:200px}
+[data-k360="finder"]:has(>.k360-hint){min-height:720px}
+[data-k360="brands"]:has(>.k360-hint){min-height:250px}
+[data-k360="collections"]:has(>.k360-hint){min-height:620px}
+[data-k360="shop"]:has(>.k360-hint){min-height:900px}
+[data-k360="map"]:has(>.k360-hint){min-height:440px}
+.store-footer:not(:has(.k360-foot)){min-height:620px}
+.store-footer:not(:has(.k360-foot))>*{visibility:hidden}
+@media(min-width:768px){.store-footer:not(:has(.k360-foot)){min-height:980px}}
+.k360-site .card-img img{aspect-ratio:1/1;object-fit:contain;width:100%;height:auto}
+.k360-site .col-p img{aspect-ratio:1/1;object-fit:contain}
