@@ -830,10 +830,7 @@ body.k360-has-bar:has(.k360-hero) .store-header { top: 38px !important; }
   .k360-hero__over { right: auto; width: 58%; left: 0; }
   .k360-hero__shade { background: linear-gradient(270deg, rgba(18,8,31,.9) 0%, rgba(18,8,31,.55) 42%, rgba(0,0,0,0) 62%); }
 }
-/* Soft cut-out where YouTube draws its previous / pause / next buttons (centre of the frame) */
-.k360-hero__over iframe { -webkit-mask-image: radial-gradient(ellipse 46vw 17vw at 50% 50%, transparent 0, transparent 62%, #000 100%); mask-image: radial-gradient(ellipse 46vw 17vw at 50% 50%, transparent 0, transparent 62%, #000 100%); }
-@media (min-width: 768px) { .k360-hero__over iframe { -webkit-mask-image: radial-gradient(ellipse 190px 70px at 50% 50%, transparent 0, transparent 62%, #000 100%); mask-image: radial-gradient(ellipse 190px 70px at 50% 50%, transparent 0, transparent 62%, #000 100%); } }
-/* ===== About page (من نحن) ===== */
+@media (min-width: 768px) { /* ===== About page (من نحن) ===== */
 .k360-doc:has(.k360-about){max-width:none;padding:0;background:none;border:0;box-shadow:none}
 .k360-about{max-width:980px;margin:0 auto;display:grid;gap:34px}
 .k360-about h3{font-size:22px;font-weight:800;margin:0 0 12px;color:var(--k-ink)}
@@ -1021,3 +1018,9 @@ body:has(.k360-hero) .store-header img[src*="221debdd"]{filter:none}
 @keyframes rib{from{transform:translateX(0)}to{transform:translateX(50%)}}
 .k360-rib--pd{height:30px;z-index:5}
 .k360-rib--pd .k360-rib__track span{font-size:13px}
+
+/* Hero text: refined tag + heading */
+.k360-hero__tag{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.12)!important;border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:6px 18px!important;font-size:13px!important;font-weight:700;letter-spacing:.02em;color:#fff;backdrop-filter:blur(4px)}
+.k360-hero__tag:before{content:"";width:8px;height:8px;border-radius:50%;background:#9461F0;box-shadow:0 0 0 4px rgba(148,97,240,.35)}
+.k360-hero__txt h1{font-weight:800;letter-spacing:-.01em;text-wrap:balance}
+.k360-hero__txt h1 em{font-style:normal;color:#C7A8FF}
