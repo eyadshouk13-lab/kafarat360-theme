@@ -554,7 +554,7 @@
   }
 
   var PAGES = { offers: "عروض الجمعة البيضاء", shop: "جميع المنتجات", best: "الأكثر مبيعاً", cats: "جميع التصنيفات", brands: "العلامات التجارية",
-    areas: "مجالات الخدمة", city: "الإطارات في مدينتك", why: "من نحن", delivery: "التسليم والتركيب", warranty: "ضمان الإطارات", returns: "الإرجاع واسترداد المبلغ",
+    book: "حجز موعد التركيب", areas: "مجالات الخدمة", city: "الإطارات في مدينتك", why: "من نحن", delivery: "التسليم والتركيب", warranty: "ضمان الإطارات", returns: "الإرجاع واسترداد المبلغ",
     privacy: "سياسة الخصوصية", terms: "الشروط والأحكام", support: "خدمة العملاء", sizes: "كيف تقرأ مقاس الإطار" };
   var PHONE = "+966555023836";
   var INFO = {
@@ -788,6 +788,7 @@
       '<div class="ar-grid">' + CITIES.map(function (c) { return '<a class="ar-card" href="' + cityUrl(c) + '"><b>الإطارات في ' + c[1] + "</b><span>مراكز التركيب &larr;</span></a>"; }).join("") + "</div>" +
       CITIES.map(function (c) { return BR[c[0]] ? "<section><h3>مراكز الخدمة والتركيب في " + c[1] + "</h3>" + brCards(BR[c[0]]) + "</section>" : ""; }).join("") + "</div>";
     if (name === "city") renderCityPage(body, q.get("c"));
+    if (name === "book") renderBookPage(body, q);
     if (name === "best") body.innerHTML = '<salla-products-list source="sales" source-value="[]"></salla-products-list>';
     if (INFO[name]) body.innerHTML = '<article class="k360-doc">' + INFO[name].replace(/href="@(\w+)"/g, function (m, n) { return 'href="' + (n === "finder" ? base().replace(/\/?$/, "/") + "#k360-finder" : pageUrl(n)) + '"'; }) + "</article>";
     if (name === "why") load("brands.json").then(function (bs) {
@@ -796,6 +797,48 @@
       if (t) t.textContent = (Math.floor(sum / 50) * 50).toLocaleString("ar-SA") + "+";
       if (n) n.textContent = live.length.toLocaleString("ar-SA");
     }).catch(function () {});
+  }
+
+  /* ---------- installation booking page: link is sent to the customer after the order ----------
+     /search?q=360&k360=book&o=<order number>   the customer picks day + time, then confirms on WhatsApp */
+  var BK_DAYS = ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
+  var BK_MON = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
+  var BK_TIMES = ["9:00 ص", "11:00 ص", "1:00 م", "3:00 م", "5:00 م", "7:00 م"];
+  function renderBookPage(body, q) {
+    var order = (q.get("o") || "").replace(/[^\w\-]/g, "").slice(0, 30), days = [], d = new Date();
+    d.setHours(12, 0, 0, 0);
+    while (days.length < 14) { d.setDate(d.getDate() + 1); if (d.getDay() !== 5) days.push(new Date(d)); }
+    var sel = { d: -1, t: -1 };
+    body.innerHTML = '<div class="k360-about bk"><section class="bk-card">' +
+      '<h2>اختر موعد تركيب وترصيص إطاراتك</h2><p class="bk-sub">نركّب إطاراتك عند أقرب مركز خدمة معتمد لك. اختر اليوم والوقت المناسبين وأكّد الموعد.</p>' +
+      '<label class="bk-lbl">رقم الطلب</label><input class="bk-in" data-o inputmode="numeric" placeholder="مثال: 123456789" value="' + esc(order) + '">' +
+      '<label class="bk-lbl">اسمك</label><input class="bk-in" data-n placeholder="الاسم الكريم">' +
+      '<label class="bk-lbl">اليوم</label><div class="bk-days" data-days></div>' +
+      '<label class="bk-lbl">الوقت</label><div class="bk-times" data-times></div>' +
+      '<div class="bk-sum" data-sum>اختر اليوم والوقت لتأكيد الموعد</div>' +
+      '<a class="k360-btn k360-btn--primary bk-go" data-go href="#" aria-disabled="true">تأكيد الموعد عبر واتساب</a>' +
+      '<p class="bk-note">بعد الضغط يفتح واتساب برسالة جاهزة فيها موعدك، وفريقنا يؤكد لك الحجز.</p></section></div>';
+    var dEl = body.querySelector("[data-days]"), tEl = body.querySelector("[data-times]"), sum = body.querySelector("[data-sum]"), go = body.querySelector("[data-go]");
+    function paint() {
+      dEl.innerHTML = days.map(function (x, i) { return '<button type="button" class="bk-day' + (sel.d === i ? " on" : "") + '" data-d="' + i + '"><small>' + BK_DAYS[x.getDay()] + "</small><b>" + x.getDate() + "</b><small>" + BK_MON[x.getMonth()] + "</small></button>"; }).join("");
+      tEl.innerHTML = BK_TIMES.map(function (t, i) { return '<button type="button" class="bk-time' + (sel.t === i ? " on" : "") + '" data-t="' + i + '"' + (sel.d < 0 ? " disabled" : "") + ">" + t + "</button>"; }).join("");
+      var ok = sel.d >= 0 && sel.t >= 0;
+      sum.className = "bk-sum" + (ok ? " ok" : "");
+      sum.textContent = ok ? "موعدك: " + BK_DAYS[days[sel.d].getDay()] + " " + days[sel.d].getDate() + " " + BK_MON[days[sel.d].getMonth()] + " الساعة " + BK_TIMES[sel.t] : (sel.d < 0 ? "اختر اليوم والوقت لتأكيد الموعد" : "اختر الوقت المناسب");
+      go.setAttribute("aria-disabled", ok ? "false" : "true");
+    }
+    body.addEventListener("click", function (e) {
+      var b = e.target.closest("[data-d],[data-t]");
+      if (b) { if (b.hasAttribute("data-d")) { sel.d = +b.getAttribute("data-d"); sel.t = -1; } else if (!b.disabled) sel.t = +b.getAttribute("data-t"); paint(); return; }
+      var g = e.target.closest("[data-go]"); if (!g) return;
+      e.preventDefault();
+      if (sel.d < 0 || sel.t < 0) return;
+      var o = body.querySelector("[data-o]").value.trim(), n = body.querySelector("[data-n]").value.trim();
+      var msg = "السلام عليكم، أرغب بتأكيد موعد تركيب وترصيص إطارات.\n" + (o ? "رقم الطلب: " + o + "\n" : "") + (n ? "الاسم: " + n + "\n" : "") +
+        "الموعد: " + BK_DAYS[days[sel.d].getDay()] + " " + days[sel.d].getDate() + " " + BK_MON[days[sel.d].getMonth()] + "، الساعة " + BK_TIMES[sel.t];
+      window.open("https://wa.me/" + PHONE.replace(/\D/g, "") + "?text=" + encodeURIComponent(msg), "_blank", "noopener");
+    });
+    paint();
   }
 
   /* ---------- service areas: one page per city ---------- */
